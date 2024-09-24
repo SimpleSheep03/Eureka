@@ -15,7 +15,7 @@ const MainLayout = ({ children }) => {
         <body>
           <div>
             <Navbar />
-            {children}
+            <div className="bg-gray-800">{children}</div>
           </div>
         </body>
       </html>

@@ -51,13 +51,13 @@ const Navbar = () => {
           href="/"
           className="navbar-brand text-2xl md:text-[28px] font-bold font-serif"
         >
-          <span className="text-yellow-600">E</span>
+          <span className="text-yellow-700">E</span>
           <span className="text-lime-900">u</span>
-          <span className="text-yellow-700">r</span>
-          <span className="text-yellow-700">e</span>
-          <span className="text-yellow-600">k</span>
-          <span className="text-yellow-700">a</span>{" "}
-          <span className="text-blue-800">!</span>
+          <span className="text-yellow-800">r</span>
+          <span className="text-yellow-800">e</span>
+          <span className="text-yellow-700">k</span>
+          <span className="text-yellow-800">a</span>{" "}
+          <span className="text-blue-900">!</span>
         </Link>
         {!session ? (
           <div className="navbar-nav">
