@@ -15,10 +15,16 @@ const UserSchema = new Schema({
     },
     username : {
         type : String ,
+    },
+    popularity : {
+        type : Number,
+        default : 0
     }
 },{
     timestamps : true
 })
+
+UserSchema.index({ username : 1 })
 
 const User = models.User || model('User' , UserSchema)
 

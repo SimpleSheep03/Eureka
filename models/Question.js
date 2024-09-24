@@ -1,0 +1,36 @@
+import { Schema, models, model } from "mongoose";
+
+const QuestionSchema = new Schema(
+  {
+    contest: {
+      type: Schema.Types.ObjectId,
+      ref: "Contest",
+      required: true,
+    },
+    questionLink: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    solutions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Solution",
+      },
+    ],
+    requestedBy : {
+        type : Number,
+        default : 0
+    }
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Question = models.Question || model("Question", QuestionSchema);
+
+export default Question;

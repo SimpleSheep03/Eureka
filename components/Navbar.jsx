@@ -45,7 +45,7 @@ const Navbar = () => {
   }, [isProfileMenuOpen]);
 
   return (
-    <nav className="navbar bg-gray-50 border-b-2 border-red-100 py-4">
+    <nav className="navbar bg-stone-200 border-b-2 border-red-100 py-4">
       <div className="container flex items-center justify-around">
         <Link
           href="/"
@@ -85,7 +85,7 @@ const Navbar = () => {
               <span className="absolute -inset-1.5"></span>
               <span className="sr-only">Open user menu</span>
               <Image
-                className="h-8 w-8 rounded-full"
+                className="h-9 w-9 rounded-full"
                 src={profileImage || "https://www.seekpng.com/png/detail/966-9665493_my-profile-icon-blank-profile-image-circle.png"}
                 alt=""
                 width={40}
