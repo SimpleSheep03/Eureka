@@ -19,6 +19,8 @@ const ContestSchema = new Schema({
     timestamps : true
 })
 
+ContestSchema.index({ platform : 1 })
+
 const Contest = models.Contest || model('Contest' , ContestSchema)
 
 export default Contest

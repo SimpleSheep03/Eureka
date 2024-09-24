@@ -1,8 +1,8 @@
 import { Schema, models, model } from "mongoose";
 
-const QuestionSchema = new Schema(
+const SolutionSchema = new Schema(
   {
-    Question: {
+    question: {
       type: Schema.Types.ObjectId,
       ref: "Question",
       required: true,
@@ -44,6 +44,8 @@ const QuestionSchema = new Schema(
   }
 );
 
-const Question = models.Question || model("Question", QuestionSchema);
+SolutionSchema.index({ question : 1 })
 
-export default Question;
+const Solution = models.Solution || model("Solution", SolutionSchema);
+
+export default Solution;
