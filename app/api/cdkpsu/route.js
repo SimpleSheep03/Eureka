@@ -15,9 +15,9 @@ export const POST = async(request) => {
         }
 
         const data = await request.json()
-        const {platform , contestName , numQuestions , questions} = data
+        const {platform , contestName , numQuestions , questions , contestDate} = data
 
-        if(!platform ||  !contestName || contestName == '' ||!numQuestions || !questions || questions.length == 0 || numQuestions != questions.length){
+        if(!platform ||  !contestName || contestName == '' ||!numQuestions || !questions || questions.length == 0 || numQuestions != questions.length || !contestDate){
             return new Response(JSON.stringify({ message : 'Fill all the field' , ok : false}) , { status : 400 })
         }
 
@@ -25,7 +25,8 @@ export const POST = async(request) => {
 
         let contest = new Contest({
             platform ,
-            title : contestName
+            title : contestName,
+            contestDate
         })
 
         await contest.save()

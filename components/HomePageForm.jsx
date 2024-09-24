@@ -1,13 +1,52 @@
-'use client'
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
+import ComboBoxForContest from "./ComboBoxForContest";
 
 const ContestForm = () => {
   const [platform, setPlatform] = useState("codeforces"); // Default platform
-  const [fieldName, setFieldName] = useState("");
+  const [contests, setContests] = useState([]);
+  const [fetchingContests, setFetchingContests] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(null);
+
+  useEffect(() => {
+    const fetchContests = async () => {
+      setFetchingContests(true);
+      try {
+        const res = await fetch("/api/fetch-contests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            platform,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.ok) {
+          console.log(data.message);
+          setContests(data.contestArr);
+        } else {
+          console.log(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFetchingContests(false);
+      }
+    };
+
+    fetchContests();
+  }, [platform]);
+
+  const handleSelectedOption = (option) => {
+    setSelectedValue(option);
+    console.log("Selected option from child:", option);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`Platform: ${platform}, Field Name: ${fieldName}`);
+    console.log(`Platform: ${platform}, Field Name: `);
     // Handle form submission logic
   };
 
@@ -15,10 +54,10 @@ const ContestForm = () => {
     <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-900 p-8 rounded-lg shadow-md w-full sm:w-4/5 md:w-3/5 mt-9"
+        className="bg-gray-900 p-8 rounded-lg shadow-md w-full sm:w-4/5 md:w-3/5 md:mt-9 "
       >
         <h2 className="text-2xl font-semibold mb-6 text-center text-white">
-          Enter Contest Details
+          Search Solutions for Contest
         </h2>
 
         {/* Select input for platform */}
@@ -28,8 +67,10 @@ const ContestForm = () => {
         <select
           id="platform"
           value={platform}
-          onChange={(e) => setPlatform(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 font-medium"
+          onChange={(e) => {
+            setPlatform(e.target.value);
+          }}
+          className="w-full p-[6.5px] border border-gray-300 rounded-md mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 font-medium"
         >
           <option value="codeforces" className="font-medium">
             Codeforces
@@ -42,23 +83,19 @@ const ContestForm = () => {
           </option>
         </select>
 
-        {/* Text input for field name */}
-        <label htmlFor="fieldName" className="block text-white font-medium mb-2">
-          Contest
-        </label>
-        <input
-          id="fieldName"
-          type="text"
-          value={fieldName}
-          onChange={(e) => setFieldName(e.target.value)}
-          placeholder="Enter field name"
-          className="w-full p-3 border border-gray-300 rounded-md mb-8 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-        />
+        <label className="block text-white font-medium mb-2">Contest</label>
 
-        {/* Submit button */}
+        <div className="mb-9">
+          <ComboBoxForContest
+            fetchColourOptions={contests}
+            platform={platform}
+            onOptionSelect={handleSelectedOption}
+          />
+        </div>
+
         <button
           type="submit"
-          className="w-full bg-white text-black font-semibold py-3 rounded-md hover:bg-amber-200 transition"
+          className="w-full bg-white text-black font-semibold py-[6.5px] rounded-md hover:bg-amber-200 transition"
         >
           Submit
         </button>

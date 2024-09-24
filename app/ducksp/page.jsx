@@ -6,18 +6,19 @@ import { useEffect, useState } from "react";
 const ContestForm = () => {
   const [platform, setPlatform] = useState("codeforces");
   const [contestName, setContestName] = useState("");
+  const [contestDate, setContestDate] = useState(""); // New state for contestDate
   const [numQuestions, setNumQuestions] = useState(1);
   const [questions, setQuestions] = useState([{ title: "", link: "" }]);
   const { data: session } = useSession();
   const router = useRouter();
-  const [submitting , setSubmitting] = useState(false)
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (!session || session.username !== "simplesheep03") {
         router.push("/");
       }
-    }, 800);
+    }, 1000);
 
     return () => clearTimeout(timeoutId);
   }, [session]);
@@ -45,8 +46,8 @@ const ContestForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ platform, contestName, questions });
-    setSubmitting(true)
+    console.log({ platform, contestName, contestDate, questions });
+    setSubmitting(true);
     // Handle form submission logic
     try {
       const res = await fetch("/api/cdkpsu", {
@@ -57,6 +58,7 @@ const ContestForm = () => {
         body: JSON.stringify({
           platform,
           contestName,
+          contestDate, // Add contestDate to submission payload
           questions,
           numQuestions,
         }),
@@ -70,9 +72,8 @@ const ContestForm = () => {
       }
     } catch (error) {
       console.log(error);
-    }
-    finally{
-        setSubmitting(false)
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -117,6 +118,19 @@ const ContestForm = () => {
           value={contestName}
           onChange={(e) => setContestName(e.target.value)}
           placeholder="Enter contest name"
+          className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400"
+        />
+
+        {/* Input for contest date */}
+        <label htmlFor="contestDate" className="text-white font-medium">
+          Contest Date
+        </label>
+        <input
+          id="contestDate"
+          type="text"
+          value={contestDate}
+          onChange={(e) => setContestDate(e.target.value)}
+          placeholder="Enter contest date (e.g., YYYY-MM-DD)"
           className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400"
         />
 
@@ -183,9 +197,10 @@ const ContestForm = () => {
         {/* Submit button */}
         <button
           type="submit"
-          className="w-full bg-white text-black font-semibold py-3 rounded-md hover:bg-amber-200 transition" disabled = {submitting}
+          className="w-full bg-white text-black font-semibold py-3 rounded-md hover:bg-amber-200 transition"
+          disabled={submitting}
         >
-          {submitting ? 'Loading' : 'Create'}
+          {submitting ? "Loading" : "Create"}
         </button>
       </form>
     </div>

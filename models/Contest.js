@@ -14,7 +14,11 @@ const ContestSchema = new Schema({
             type : Schema.Types.ObjectId,
             ref : 'Question'
         }
-    ]
+    ],
+    contestDate : {
+        type : String,
+        required : true
+    }
 },{
     timestamps : true
 })
