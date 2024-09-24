@@ -5,17 +5,17 @@ import AuthProvider from "@/components/AuthProvider";
 
 export const metadata = {
   title: "Eureka",
-  description: "Intuitive solutions for competitve programming contests",
+  description: "Intuitive solutions for competitive programming contests",
 };
 
 const MainLayout = ({ children }) => {
   return (
     <AuthProvider>
-      <html>
-        <body>
-          <div>
+      <html className="h-full">
+        <body className="h-full">
+          <div className="h-full bg-gray-800">
             <Navbar />
-            <div className="bg-gray-800">{children}</div>
+            <div className="flex-grow">{children}</div>
           </div>
         </body>
       </html>

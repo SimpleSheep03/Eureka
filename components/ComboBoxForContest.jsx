@@ -3,13 +3,12 @@ import Select from "react-select";
 
 const SelectComponent = ({ fetchColourOptions, platform, onOptionSelect }) => {
   const [colourOptions, setColourOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null); // Start as null for no default value
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (fetchColourOptions.length > 0) {
       setColourOptions(fetchColourOptions);
-      setSelectedOption(fetchColourOptions[0]); // Set default option
       setLoading(false);
     }
   }, [fetchColourOptions]);
@@ -38,18 +37,19 @@ const SelectComponent = ({ fetchColourOptions, platform, onOptionSelect }) => {
         classNamePrefix="select"
         placeholder={
           platform === "codechef"
-            ? "Starters 153"
+            ? "Eg - Starters 153"
             : platform === "codeforces"
-            ? "Codeforces Round 975 (Div. 2)"
-            : "Weekly Contest 417"
+            ? "Eg - Codeforces Round 975 (Div. 2)"
+            : "Eg - Weekly Contest 417"
         }
-        value={selectedOption} // Controlled input
+        value={selectedOption} // No default value, placeholder will show
         onChange={handleSelectChange} // Call handler on change
         isClearable={true}
         isSearchable={true}
         isDisabled={!colourOptions.length}
         name="contest"
         options={colourOptions}
+        required
       />
     </>
   );

@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import ComboBoxForContest from "./ComboBoxForContest";
+import { useRouter } from "next/navigation";
 
 const ContestForm = () => {
   const [platform, setPlatform] = useState("codeforces"); // Default platform
   const [contests, setContests] = useState([]);
   const [fetchingContests, setFetchingContests] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchContests = async () => {
@@ -41,13 +43,11 @@ const ContestForm = () => {
 
   const handleSelectedOption = (option) => {
     setSelectedValue(option);
-    console.log("Selected option from child:", option);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`Platform: ${platform}, Field Name: `);
-    // Handle form submission logic
+    router.push(`/contest/${selectedValue.value}`)
   };
 
   return (
