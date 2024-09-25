@@ -10,7 +10,7 @@ export const GET = async (request) => {
 
     if (!contestId) {
       return new Response(
-        JSON.stringify({ message: "Contest ID is required", ok: false }),
+        JSON.stringify({ message: "Fill all the fields", ok: false }),
         { status: 400 }
       );
     }
@@ -21,7 +21,7 @@ export const GET = async (request) => {
     const contest = await Contest.findById(contestId);
     if (!contest) {
       return new Response(
-        JSON.stringify({ message: "Contest not found", ok: false }),
+        JSON.stringify({ message: "Incorrect input", ok: false }),
         { status: 404 }
       );
     }

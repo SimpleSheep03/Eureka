@@ -10,6 +10,9 @@ const SolutionSchema = new Schema(
     acceptedCodeLink: {
       type: String,
     },
+    additionalLinks : {
+      type : String,
+    },
     heading: {
       type: String,
       required: true,
@@ -28,8 +31,8 @@ const SolutionSchema = new Schema(
       default: 0,
     },
     User: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+      required : true,
     },
     comments: [
       {

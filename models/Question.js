@@ -35,7 +35,7 @@ const QuestionSchema = new Schema(
   }
 );
 
-QuestionSchema.index({ contest : 1 })
+QuestionSchema.index({ contest : 1 , contestDate : 1 })
 
 const Question = models.Question || model("Question", QuestionSchema);
 

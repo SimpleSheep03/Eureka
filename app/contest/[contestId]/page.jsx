@@ -41,7 +41,7 @@ const ContestQuestions = () => {
 
   return (
     <div className="p-8">
-      <div className="bg-gray-900 p-8">
+      <div className="bg-gray-900 p-8 rounded-sm">
         <h1 className="text-[35px] font-semibold mb-4 text-white text-center">
           {contestName} - Questions
         </h1>
@@ -50,8 +50,8 @@ const ContestQuestions = () => {
             {questions.map((question, index) => (
               <div key={index} className="flex flex-wrap mt-10 justify-center mb-7 items-center">
                 <Link
-                  href={question.questionLink}
-                  className="text-white text-[25px] underline flex items-center text-center" target="__blank"
+                  href={`/question/${question._id}`}
+                  className="text-white text-[25px] underline flex items-center text-center"
                 >
                   {question.title}
                 </Link>

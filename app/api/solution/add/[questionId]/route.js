@@ -1,0 +1,69 @@
+import connectDB from "@/config/database";
+import Question from "@/models/Question";
+import Solution from "@/models/Solution";
+
+export const POST = async (request , { params }) => {
+  try {
+    const { questionId } = params
+    
+    if (!questionId) {
+      return new Response(
+        JSON.stringify({ message: "Fill all the fields", ok: false }),
+        { status: 400 }
+      );
+    }
+
+    await connectDB();
+    const question = await Question.findById(questionId);
+    if (!question) {
+      return new Response(
+        JSON.stringify({ message: "Incorrect input", ok: false }),
+        { status: 400 }
+      );
+    }
+
+    const data = await request.json();
+    let {
+      User,
+      heading,
+      solutionHints,
+      solutionText,
+      additionalLinks,
+      acceptedCodeLink,
+    } = data;
+    User = User || "Anonymous";
+
+    if (!heading || solutionHints.length > 5 || !solutionText) {
+      return new Response(
+        JSON.stringify({ message: "Fill all the fields", ok: false }),
+        { status: 400 }
+      );
+    }
+    
+    const solution = new Solution({
+      User , 
+      question : question._id,
+      heading ,
+      solutionText,
+      solutionHints,
+      acceptedCodeLink,
+      additionalLinks,
+      contestDate : question.contestDate
+    })
+
+    await solution.save()
+
+    question.solutions.push(solution._id)
+
+    await question.save()
+
+    return new Response(JSON.stringify({ message : 'Added the solution successfully' , ok : true }) , { status : 200 })
+
+  } catch (error) {
+    console.log(error);
+    return new Response(
+      JSON.stringify({ message: "Could not add solution", ok: false }),
+      { status: 500 }
+    );
+  }
+};
