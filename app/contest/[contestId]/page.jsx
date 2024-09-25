@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FaExternalLinkAlt } from 'react-icons/fa';
+import Loader from '@/components/Loader'
 
 const ContestQuestions = () => {
   const { contestId } = useParams();
@@ -32,9 +33,10 @@ const ContestQuestions = () => {
     };
 
     fetchQuestions();
+
   }, [contestId]);
 
-  if (loading) return <div>Loading questions...</div>;
+  if (loading) return <Loader/>;
   if (error) return <div>Error: {error}</div>;
 
   return (

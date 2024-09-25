@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import Image from "next/image";
 import { IoHomeSharp } from "react-icons/io5";
+import { FcGoogle } from "react-icons/fc";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -72,12 +73,14 @@ const Navbar = () => {
           {/* Conditional Rendering for Sign In or Profile */}
           {!session ? (
             <button
-              className="middle none center rounded-lg border border-orange-500 py-2 px-4 font-sans text-xs font-bold uppercase text-orange-500 transition-all hover:opacity-75 focus:ring focus:ring-pink-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              disabled={!providers?.google}
-              onClick={() => signIn(providers?.google.id)}
-            >
-              Sign In
-            </button>
+            className="flex items-center space-x-2 rounded-lg border border-orange-500 py-2 px-4 font-sans text-xs font-bold uppercase text-orange-500 transition-all hover:opacity-75 focus:ring focus:ring-pink-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            disabled={!providers?.google}
+            onClick={() => signIn(providers?.google.id)}
+          >
+            <FcGoogle className="text-xl" />
+            <span>Sign In</span>
+          </button>
+          
           ) : (
             <div className="relative">
               <button

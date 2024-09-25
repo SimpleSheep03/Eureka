@@ -1,7 +1,8 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import Loader from '@/components/Loader'
 
 const ContestForm = () => {
   const [platform, setPlatform] = useState("codeforces");
@@ -12,6 +13,11 @@ const ContestForm = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [loading , setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(false)
+  } , [])
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -76,6 +82,10 @@ const ContestForm = () => {
       setSubmitting(false);
     }
   };
+
+  if(loading){
+    return <Loader/>
+  }
 
   return (
     <div className="flex justify-center items-center">

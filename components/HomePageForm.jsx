@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 import ComboBoxForContest from "./ComboBoxForContest";
 import { useRouter } from "next/navigation";
+import Loader from '@/components/Loader'
 
 const ContestForm = () => {
   const [platform, setPlatform] = useState("codeforces"); // Default platform
   const [contests, setContests] = useState([]);
   const [fetchingContests, setFetchingContests] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
+  const [submitting , setSubmitting] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -47,8 +49,14 @@ const ContestForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitting(true)
     router.push(`/contest/${selectedValue.value}`)
+    setSubmitting(false)
   };
+
+  if(fetchingContests){
+    return <Loader/>
+  }
 
   return (
     <div className="flex justify-center items-center">
@@ -96,8 +104,9 @@ const ContestForm = () => {
         <button
           type="submit"
           className="w-full bg-white text-black font-semibold py-[6.5px] rounded-md hover:bg-amber-200 transition"
+          disabled={submitting}
         >
-          Submit
+          {submitting ? 'Loading' : 'Submit'}
         </button>
       </form>
     </div>

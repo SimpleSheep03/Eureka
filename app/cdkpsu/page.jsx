@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Loader from '@/components/Loader'
 
 const SimpleContestForm = () => {
   const [contestId, setcontestId] = useState("");
@@ -10,6 +11,11 @@ const SimpleContestForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const {data : session} = useSession()
   const router = useRouter()
+  const [loading , setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(false)
+  } , [])
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -51,6 +57,10 @@ const SimpleContestForm = () => {
       setSubmitting(false);
     }
   };
+
+  if(loading){
+    return <Loader/>
+  }
 
   return (
     <div className="flex justify-center items-center">
