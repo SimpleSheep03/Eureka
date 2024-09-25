@@ -12,9 +12,12 @@ const MainLayout = ({ children }) => {
   return (
     <AuthProvider>
       <html className="h-full">
-        <body className="h-full">
-          <div className="h-full bg-gray-800">
+        <body className="h-full bg-gray-800">
+          <div className="min-h-full flex flex-col">
+            {/* Navbar */}
             <Navbar />
+            
+            {/* Content Section */}
             <div className="flex-grow">{children}</div>
           </div>
         </body>

@@ -37,6 +37,10 @@ const SolutionSchema = new Schema(
         ref: "Comment",
       },
     ],
+    contestDate : {
+      type : String,
+      required : true
+    }
 
   },
   {

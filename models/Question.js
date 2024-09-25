@@ -24,6 +24,10 @@ const QuestionSchema = new Schema(
     requestedBy : {
         type : Number,
         default : 0
+    },
+    contestDate : {
+      type : String,
+      required : true
     }
   },
   {

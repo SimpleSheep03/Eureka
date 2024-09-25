@@ -3,9 +3,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loader from '@/components/Loader'
+import toast , {Toaster} from 'react-hot-toast'
 
 const SimpleContestForm = () => {
-  const [contestId, setcontestId] = useState("");
+  const [contestId, setContestId] = useState("");
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionLink, setQuestionLink] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -46,13 +47,18 @@ const SimpleContestForm = () => {
       });
 
       const data = await res.json();
-      if (!data.ok) {
-        console.log(data.message);
+      if (data.ok) {
+        toast.success('Successfully added the question')
+        setContestId('')
+        setQuestionTitle('')
+        setQuestionLink('')
       } else {
         console.log(data.message);
+        toast.error(data.message)
       }
     } catch (error) {
       console.log(error);
+      toast.error('An error occurred')
     } finally {
       setSubmitting(false);
     }
@@ -68,6 +74,7 @@ const SimpleContestForm = () => {
         onSubmit={handleSubmit}
         className="bg-gray-900 p-8 rounded-lg shadow-md w-full sm:w-4/5 md:w-3/5 lg:w-4/5 xl:w-4/5 mt-10"
       >
+        <Toaster />
         <h2 className="text-2xl font-semibold mb-6 text-center text-white">
           Add a Question
         </h2>
@@ -80,9 +87,9 @@ const SimpleContestForm = () => {
           id="contestId"
           type="text"
           value={contestId}
-          onChange={(e) => setcontestId(e.target.value)}
+          onChange={(e) => setContestId(e.target.value)}
           placeholder="Enter Contest ID"
-          className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400"
+          className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400 mt-1"
         />
 
         {/* Input for question title */}
@@ -95,7 +102,7 @@ const SimpleContestForm = () => {
           value={questionTitle}
           onChange={(e) => setQuestionTitle(e.target.value)}
           placeholder="Enter question title"
-          className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400"
+          className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400 mt-1"
         />
 
         {/* Input for question link */}
@@ -108,7 +115,7 @@ const SimpleContestForm = () => {
           value={questionLink}
           onChange={(e) => setQuestionLink(e.target.value)}
           placeholder="Enter question link"
-          className="w-full p-3 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400"
+          className="w-full p-3 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-400 mt-1"
         />
 
         {/* Submit button */}
