@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Loader from '@/components/Loader'
 
 const ContestForm = () => {
-  const [platform, setPlatform] = useState(localStorage.getItem("platform") || "codeforces"); // Default platform
+  const [platform, setPlatform] = useState(localStorage?.getItem("platform") || "codeforces"); // Default platform
   const [contests, setContests] = useState([]);
   const [fetchingContests, setFetchingContests] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -51,7 +51,6 @@ const ContestForm = () => {
     e.preventDefault();
     setSubmitting(true)
     router.push(`/contest/${selectedValue.value}`)
-    setSubmitting(false)
   };
 
   if(fetchingContests){

@@ -1,16 +1,17 @@
-'use client';
-import { useSession } from 'next-auth/react';
-import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import toast , { Toaster } from 'react-hot-toast'
-import Loader from '@/components/Loader'
+"use client";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import Loader from "@/components/Loader";
 
 const SolutionFormPage = () => {
-  const {data : session} = useSession()
+  const { data: session } = useSession();
   const { questionId } = useParams();
-  const [question , setQuestion] = useState('')
-  const [loading , setLoading] = useState(true)
-  const [submitting , setSubmitting] = useState(false)
+  const [question, setQuestion] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchQuestionData = async () => {
@@ -34,38 +35,43 @@ const SolutionFormPage = () => {
         } catch (error) {
           console.log(error);
           toast.error("An error occurred");
-        }
-        finally{
-          setLoading(false)
+        } finally {
+          setLoading(false);
         }
       }
     };
 
-    fetchQuestionData()
-  } , [])
+    fetchQuestionData();
+  }, []);
 
-  
   // State to capture form data
   const [formData, setFormData] = useState({
-    heading: '',
-    acceptedCodeLink: '',
+    heading: "",
+    acceptedCodeLink: "",
     solutionHints: [],
     hintsCount: 0, // New field to capture number of hints
-    solutionText: '',
-    additionalLinks: '',
+    solutionText: "",
+    additionalLinks: "",
   });
-  
+
+  // Handle form input changes
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    if (name === 'hintsCount') {
+
+    if (name === "hintsCount") {
       const count = parseInt(value, 10);
-      setFormData((prevState) => ({
-        ...prevState,
-        hintsCount: count,
-        solutionHints: Array(count).fill(''), // Initialize the number of hint fields dynamically
-      }));
+
+      setFormData((prevState) => {
+        const currentHints = prevState.solutionHints.slice(0, count); // Keep existing hints if fewer are needed
+        const newHints = Array(count - currentHints.length).fill(""); // Fill remaining with empty strings if more hints are needed
+
+        return {
+          ...prevState,
+          hintsCount: count,
+          solutionHints: [...currentHints, ...newHints], // Merge existing and new empty hints
+        };
+      });
     } else {
       setFormData((prevState) => ({
         ...prevState,
@@ -73,7 +79,7 @@ const SolutionFormPage = () => {
       }));
     }
   };
-  
+
   // Handle hint input changes dynamically
   const handleHintChange = (index, value) => {
     const updatedHints = [...formData.solutionHints];
@@ -83,55 +89,69 @@ const SolutionFormPage = () => {
       solutionHints: updatedHints,
     }));
   };
-  
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true)
+    setSubmitting(true);
     // Process the form data here
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
     try {
-      const res = await fetch(`/api/solution/add/${questionId}` , {
+      const res = await fetch(`/api/solution/add/${questionId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          User : session?.username,
-          heading : formData.heading,
-          solutionHints : formData.solutionHints,
-          solutionText : formData.solutionText,
-          additionalLinks : formData.additionalLinks,
-          acceptedCodeLink : formData.acceptedCodeLink
+          User: session?.username,
+          heading: formData.heading,
+          solutionHints: formData.solutionHints,
+          solutionText: formData.solutionText,
+          additionalLinks: formData.additionalLinks,
+          acceptedCodeLink: formData.acceptedCodeLink,
         }),
-      })
+      });
 
-      const data = await res.json()
-      if(data.ok){
-        toast.success('Successfully added the solution')
-      }
-      else{
-        console.log(data.message)
-        toast.error(data.message)
+      const data = await res.json();
+      if (data.ok) {
+        toast.success("Successfully added the solution");
+        setFormData({
+          heading: "",
+          acceptedCodeLink: "",
+          solutionHints: [],
+          hintsCount: 0, // New field to capture number of hints
+          solutionText: "",
+          additionalLinks: "",
+        });
+        router.push(`/question/${questionId}`)
+      } else {
+        console.log(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
-      toast.error('An error occurred')
-    }
-    finally{
-      setSubmitting(false)
+      console.log(error);
+      toast.error("An error occurred");
+    } finally {
+      setSubmitting(false);
     }
   };
-  
-  if(loading || !question || !questionId){
-    return <Loader/>
+
+  if (loading || !question || !questionId) {
+    return <Loader />;
   }
   return (
-    <div className="flex justify-center items-center md:mt-8">
-      <Toaster/>
-      <div className="bg-gray-900 p-10 text-white w-full md:w-4/5 max-w-9/10 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold mb-6 text-center">Submit Your Solution</h2>
-        
+    <div className="flex justify-center items-center md:mt-8 md:p-8">
+      <Toaster />
+      <div className="bg-gray-900 p-10 text-white w-full max-w-9/10 rounded-lg shadow-lg">
+        {/* Display the Question Title */}
+        <h1 className="text-4xl font-bold mb-10 text-center">
+          {question.title}
+        </h1>
+
+        <h2 className="text-3xl font-bold mb-6 text-center">
+          Submit Your Solution
+        </h2>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Heading Field */}
           <div>
@@ -173,14 +193,17 @@ const SolutionFormPage = () => {
           {/* Dynamic Solution Hints */}
           {Array.from({ length: formData.hintsCount }, (_, index) => (
             <div key={index}>
-              <label htmlFor={`hint-${index}`} className="block text-sm font-medium">
+              <label
+                htmlFor={`hint-${index}`}
+                className="block text-sm font-medium"
+              >
                 Hint {index + 1}
               </label>
               <input
                 type="text"
                 id={`hint-${index}`}
                 name={`hint-${index}`}
-                value={formData.solutionHints[index] || ''}
+                value={formData.solutionHints[index] || ""}
                 onChange={(e) => handleHintChange(index, e.target.value)}
                 className="mt-1 block w-full p-2 bg-gray-700 text-white border border-gray-700 rounded"
               />
@@ -205,7 +228,10 @@ const SolutionFormPage = () => {
 
           {/* Accepted Code Link */}
           <div>
-            <label htmlFor="acceptedCodeLink" className="block text-sm font-medium">
+            <label
+              htmlFor="acceptedCodeLink"
+              className="block text-sm font-medium"
+            >
               Accepted Code Link
             </label>
             <input
@@ -221,7 +247,10 @@ const SolutionFormPage = () => {
 
           {/* Additional Links */}
           <div>
-            <label htmlFor="additionalLinks" className="block text-sm font-medium">
+            <label
+              htmlFor="additionalLinks"
+              className="block text-sm font-medium"
+            >
               Additional Links
             </label>
             <input
@@ -242,7 +271,7 @@ const SolutionFormPage = () => {
               className="w-full bg-white text-black font-semibold py-3 rounded-md hover:bg-amber-200 transition"
               disabled={submitting}
             >
-              {submitting ? 'Loading' : 'Submit Solution'}
+              {submitting ? "Loading" : "Submit Solution"}
             </button>
           </div>
         </form>

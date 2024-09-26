@@ -78,6 +78,7 @@ const ContestForm = () => {
         setContestDate('')
         setContestName('')
         setQuestions([{ title: "", link: "" }])
+        setNumQuestions(1)
       } else {
         toast.error(data.message);
       }

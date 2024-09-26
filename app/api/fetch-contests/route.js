@@ -23,10 +23,11 @@ export const POST = async (request) => {
     // Prepare an array of contest objects
     const contestArr = contests.map((contest) => ({
       value: contest._id,
-      label: contest.title
+      label: contest.title,
+      contestDate : contest.contestDate
     }));
 
-    contestArr.sort((a , b) => a.contestDate - b.contestDate)
+    contestArr.sort((a, b) => parseInt(b.contestDate) - parseInt(a.contestDate));
 
     // Send response with the fetched contests
     return new Response(

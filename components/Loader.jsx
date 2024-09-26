@@ -1,13 +1,13 @@
 import React from 'react';
-import BeatLoader from 'react-spinners/BeatLoader';
+import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader';
 
-const BeatLoaderComponent = () => {
+const ClimbingBoxLoaderComponent = () => {
 
   return (
     <div className="flex items-center justify-center h-[80vh]">
-      <BeatLoader color="#ffffff" loading={true} size={30} />
+      <ClimbingBoxLoader color="#ffffff" loading={true} size={20} />
     </div>
   );
 };
 
-export default BeatLoaderComponent;
+export default ClimbingBoxLoaderComponent;
