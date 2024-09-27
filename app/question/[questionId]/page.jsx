@@ -1,5 +1,6 @@
 "use client";
 import { IoMdPerson } from "react-icons/io";
+import { IoAddCircle } from "react-icons/io5";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -7,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Loader from "@/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
+import { MdAddBox } from "react-icons/md";
 
 const page = () => {
   const [question, setQuestion] = useState();
@@ -16,7 +18,8 @@ const page = () => {
   const [contestName, setContestName] = useState("");
   const { data: session } = useSession();
   const handle = session?.username;
-  const [reactions, setReactions] = useState([]);
+  const [reactions, setReactions] = useState([])
+  const [questionIsRequested , setQuestionIsRequested] = useState(false)
 
   useEffect(() => {
     const fetchQuestionData = async () => {
@@ -35,6 +38,7 @@ const page = () => {
           if (data.ok) {
             setQuestion(data.question);
             setContestName(data.contestName);
+            setQuestionIsRequested(data.requested)
           } else {
             toast.error(data.message);
           }
@@ -74,7 +78,7 @@ const page = () => {
     fetchQuestionData();
     fetchSolutions();
     setLoading(false);
-  }, []);
+  }, [handle , session]);
 
   if (loading || !question || !contestName) {
     return <Loader />;
@@ -82,6 +86,7 @@ const page = () => {
 
   // Function to get reaction value for a specific solution
   const getReaction = (solutionId) => {
+
     if (!handle || !reactions || reactions.length == 0) {
       return 0;
     }
@@ -120,53 +125,45 @@ const page = () => {
       const data = await res.json();
 
       if (data.ok) {
-
-        // First, update the reactions state
         setReactions((prevReactions) => {
           const existingReaction = prevReactions.find(
             (reaction) => reaction._id === solutionId
           );
 
-          // Handle reaction toggling and switching
           if (existingReaction) {
             if (existingReaction.value === value) {
-              // Same reaction, user cancels the like/dislike
               return prevReactions.filter(
                 (reaction) => reaction._id !== solutionId
               );
             } else {
-              // User switches the reaction (like -> dislike or vice versa)
               return prevReactions.map((reaction) =>
                 reaction._id === solutionId ? { ...reaction, value } : reaction
               );
             }
           } else {
-            // New reaction (like or dislike)
             return [...prevReactions, { _id: solutionId, value }];
           }
         });
 
-        // Now, update the solutions state based on the updated reactions
         setSolutions((prevSolutions) => {
           return prevSolutions.map((solution) => {
             if (solution._id === solutionId) {
-              // Adjust netUpvotes based on updated reactions
               const previousReaction = reactions.find(
                 (r) => r._id === solutionId
               );
-              let adjustment = value; // Default adjustment
+              let adjustment = value;
 
               if (previousReaction) {
                 if (previousReaction.value === value) {
-                  adjustment = -value; // Cancel the previous reaction
+                  adjustment = -value;
                 } else {
-                  adjustment = value - previousReaction.value; // Switch reactions
+                  adjustment = value - previousReaction.value;
                 }
               }
 
               return {
                 ...solution,
-                netUpvotes: solution.netUpvotes + adjustment, // Dynamically adjust net upvotes
+                netUpvotes: solution.netUpvotes + adjustment,
               };
             }
             return solution;
@@ -178,6 +175,44 @@ const page = () => {
     } catch (error) {
       toast.error("An error occurred");
       console.error(error);
+    }
+  };
+
+  // Handle "request for the question"
+  const handleRequest = async () => {
+    if (!session || !handle) {
+      toast("Please sign in first", {
+        icon: "⚠️",
+        style: {
+          padding: "16px",
+          color: "#b45309",
+        },
+      });
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/requestQuestion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          questionId,
+          handle,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.ok) {
+        setQuestion(data.question)
+        setQuestionIsRequested(data.requested)
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred");
     }
   };
 
@@ -210,14 +245,32 @@ const page = () => {
               </Link>
             </div>
 
-            <div className="mb-4 flex items-center">
+            <div className="mb-8 flex items-center">
               <span className="font-semibold">Requested By: </span>
-              <span className="ml-2">{question.requestedBy}</span>
-              <IoMdPerson className="text-white ml-2" />
+              <span className="ml-2">{question.requestedBy || "None"}</span>
+              <IoMdPerson className={`text-white ml-2`} />
             </div>
 
+            {/* Add the new request section here */}
+            {session && (
+              <div className="text-center flex items-center mb-4">
+                <span className="font-semibold">
+                  Need an answer? Request for the question!
+                </span>
+                <MdAddBox
+                  onClick={handleRequest}
+                  className={`ml-2 cursor-pointer ${
+                    questionIsRequested
+                      ? "text-yellow-500"
+                      : "text-white"
+                  }`}
+                  size={24}
+                />
+              </div>
+            )}
+
             <div className="text-center flex items-center max-sm:mb-10">
-              <span className="font-semibold text-xl">
+              <span className="font-semibold text-">
                 Have a solution? You can share it
               </span>
               <Link
@@ -254,7 +307,6 @@ const page = () => {
                           </Link>
                         </p>
                         <p className="text-[15px] mt-4 max-sm:mt-5 flex items-center">
-                          {/* Like Icon with conditional color and onClick handler */}
                           <AiFillLike
                             className={`mr-2 cursor-pointer ${
                               reactionValue === 1 ? "text-green-500" : ""
@@ -274,8 +326,6 @@ const page = () => {
                               ? `+${solution.netUpvotes}`
                               : solution.netUpvotes}
                           </div>
-
-                          {/* Dislike Icon with conditional color and onClick handler */}
                           <AiFillDislike
                             className={`ml-2 cursor-pointer ${
                               reactionValue === -1 ? "text-red-500" : ""

@@ -1,4 +1,4 @@
-import Solution from "@/models/Solution";
+import Question from "@/models/Question";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 
@@ -11,10 +11,11 @@ export const POST = async (request) => {
         { status: 401 }
       );
     }
-    const data = await request.json();
-    const { solutionId, value, handle } = data;
 
-    if (!solutionId || !value || !handle || ![1, -1].includes(value)) {
+    const data = await request.json();
+    const { questionId, handle } = data;
+
+    if (!questionId || !handle) {
       return new Response(
         JSON.stringify({ message: "Fill all the fields", ok: false }),
         { status: 400 }
@@ -28,9 +29,10 @@ export const POST = async (request) => {
       );
     }
 
-    const solution = await Solution.findById(solutionId);
+    const question = await Question.findById(questionId);
     let user = await User.find({ username: handle });
-    if (!solution || !user || user.length != 1) {
+
+    if (!question || !user || user.length != 1) {
       return new Response(
         JSON.stringify({ message: "Incorrect input", ok: false }),
         { status: 400 }
@@ -40,55 +42,43 @@ export const POST = async (request) => {
     user = user[0];
 
     let reactions = user.reactions;
-
-    let flag = 0,
-      val;
+    let flag = 0;
     for (const reaction of reactions) {
-      console.log(reaction, reaction._id);
-      if (reaction._id.toString() === solutionId.toString()) {
-        flag = 1; // Set flag if a matching reaction is found
-        val = reaction.value;
+      if (reaction._id.toString() == questionId.toString()) {
+        flag = 1;
       }
     }
-
-    console.log(flag , value , val)
-
+    let requested
     if (flag) {
       // Filter out the reaction and update the reactions array
-      if (val == value) {
-        reactions = reactions.filter(
-          (reaction) => reaction._id.toString() !== solutionId.toString()
-        );
-        solution.netUpvotes = solution.netUpvotes - value;
-      } else {
-        for (const reaction of reactions) {
-          if (reaction._id == solutionId.toString()) {
-            reaction.value = value;
-          }
-        }
-        solution.netUpvotes = solution.netUpvotes + 2 * value;
-      }
+      reactions = reactions.filter(
+        (reaction) => reaction._id.toString() !== questionId.toString()
+      );
+      question.requestedBy = question.requestedBy - 1; // Decrement the net upvotes
+      requested = false
     } else {
-      reactions.push({ _id: solutionId, value });
-      solution.netUpvotes = solution.netUpvotes + value;
+      reactions.push({ _id: questionId, value: 1 });
+      question.requestedBy = question.requestedBy + 1;
+      requested = true
     }
 
-    user.reactions = reactions;
-
+    user.reactions = reactions
     await user.save();
-    await solution.save();
+    await question.save();
+
     return new Response(
       JSON.stringify({
-        message: "Successfully updated the reaction",
+        message: "Successfully updated the request",
         ok: true,
-        solution,
+        question,
+        requested
       }),
       { status: 200 }
     );
   } catch (error) {
     console.log(error);
     return new Response(
-      JSON.stringify({ message: "Could not update the reaction", ok: false }),
+      JSON.stringify({ message: "Could not request the question", ok: false }),
       { status: 500 }
     );
   }
