@@ -17,7 +17,7 @@ const MainLayout = ({ children }) => {
           <div className="min-h-full flex flex-col">
             {/* Navbar */}
             <Navbar />
-            <BackArrow/>
+            <BackArrow />
             {/* Content Section */}
             <div className="flex-grow">{children}</div>
           </div>

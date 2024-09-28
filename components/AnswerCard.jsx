@@ -3,14 +3,7 @@ import Link from "next/link";
 import { FaExternalLinkAlt, FaEdit } from "react-icons/fa";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 
-const AnswerCard = ({ answer, reactions, edit }) => {
-  // Check if the answer has been liked or disliked
-  const userReaction = reactions?.find(
-    (reaction) => reaction._id === answer._id
-  );
-  const isLiked = userReaction && userReaction.value === 1;
-  const isDisliked = userReaction && userReaction.value === -1;
-
+const AnswerCard = ({ answer, edit }) => {
   return (
     <li className="bg-gray-800 py-4 px-5 rounded-md">
       <div className="flex justify-between items-center mb-5">
@@ -46,19 +39,14 @@ const AnswerCard = ({ answer, reactions, edit }) => {
       </div>
 
       <div className="mt-2 flex items-center">
-        <AiFillLike
-          className={`mr-1 ${isLiked ? "text-green-500" : "text-white"}`}
-        />
-        <span
-          className={`mx-2 ${isLiked ? "text-green-500" : "text-white"} ${
-            isDisliked ? "text-red-500" : ""
-          }`}
-        >
+        {answer.netUpvotes > 0 ? (
+          <AiFillLike className="text-green-500 mr-1" />
+        ) : answer.netUpvotes < 0 ? (
+          <AiFillDislike className="text-red-500 mr-1" />
+        ) : null}
+        <span className={`mx-2 ${answer.netUpvotes === 0 ? 'text-white' : ''}`}>
           {answer.netUpvotes <= 0 ? answer.netUpvotes : `+${answer.netUpvotes}`}
         </span>
-        <AiFillDislike
-          className={`ml-1 ${isDisliked ? "text-red-500" : "text-white"}`}
-        />
       </div>
     </li>
   );

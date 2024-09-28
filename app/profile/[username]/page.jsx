@@ -1,19 +1,19 @@
-"use client"; 
+"use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation"; 
-import AnswerCard from "@/components/AnswerCard"; 
-import Loader from "@/components/Loader"; 
-import toast, { Toaster } from "react-hot-toast"; 
-import { useSession } from "next-auth/react"; 
+import { useParams } from "next/navigation";
+import AnswerCard from "@/components/AnswerCard";
+import Loader from "@/components/Loader";
+import toast, { Toaster } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const ProfilePage = () => {
-  const { username } = useParams(); 
-  const { data: session } = useSession(); 
+  const { username } = useParams();
+  const { data: session } = useSession();
   const [user, setUser] = useState(null);
-  const [solutions, setSolutions] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [reactions , setReactions] = useState([])
+  const [solutions, setSolutions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [reactions, setReactions] = useState([]);
 
   const fetchUserProfile = async () => {
     setLoading(true);
@@ -24,8 +24,8 @@ const ProfilePage = () => {
       const data = await response.json();
       if (data.ok) {
         setUser(data.user);
-        setSolutions(data.solutions); 
-        setReactions(data.reactions)
+        setSolutions(data.solutions);
+        setReactions(data.reactions);
       } else {
         toast.error(data.message || "Failed to load user profile");
       }
@@ -42,7 +42,7 @@ const ProfilePage = () => {
   }, [username]);
 
   if (loading) {
-    return <Loader />; 
+    return <Loader />;
   }
 
   if (!user) {
