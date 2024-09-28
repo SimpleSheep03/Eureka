@@ -76,16 +76,19 @@ const page = () => {
       }
     };
 
-    fetchQuestionData();
-    fetchSolutions();
-    setLoading(false);
+    const fetchData = async () => {
+      await fetchQuestionData();
+      await fetchSolutions();
+      setLoading(false);
+    };
+
+    fetchData()
   }, [handle, session]);
 
   if (loading || !question || !contestName) {
     return <Loader />;
   }
 
-  // Function to get reaction value for a specific solution
   const getReaction = (solutionId) => {
     if (!handle || !reactions || reactions.length == 0) {
       return 0;

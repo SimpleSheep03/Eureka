@@ -1,5 +1,6 @@
 import ContestForm from '@/components/HomePageForm'
 import RecentAnswers from '@/components/RecentAnswers'
+import RecentlyRequested from '@/components/RecentlyRequested'
 import React from 'react'
 
 const page = async () => {
@@ -9,6 +10,7 @@ const page = async () => {
     <div>
       <ContestForm/>
       <RecentAnswers/>
+      <RecentlyRequested/>
     </div>
   )
 }

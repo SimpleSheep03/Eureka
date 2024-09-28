@@ -10,7 +10,7 @@ const AnswerCard = ({ answer, reactions }) => {
   const isDisliked = userReaction && userReaction.value === -1;
 
   return (
-    <li className="bg-gray-800 p-4 rounded-md">
+    <li className="bg-gray-800 py-4 px-5 rounded-md">
       <Link
         href={`/solution/${answer._id}`}
         className="text-xl flex items-center mb-5"

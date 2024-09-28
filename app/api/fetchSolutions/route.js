@@ -8,7 +8,7 @@ export const POST = async (request) => {
   try {
     const data = await request.json();
     const { questionId, solutionId, size, handle , pageNo } = data;
-    const actualSize = size || 5;
+    const actualSize = size || 3;
 
     await connectDB();
 
@@ -92,6 +92,7 @@ export const POST = async (request) => {
           ok: true,
           solutions,
           reactions,
+          lastPage : (await Solution.estimatedDocumentCount() == (pageNo - 1) * actualSize + solutions.length)
         }),
         { status: 200 }
       );

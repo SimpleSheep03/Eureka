@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import ComboBoxForContest from "./ComboBoxForContest";
 import { useRouter } from "next/navigation";
 import Loader from '@/components/Loader'
+import { setCookie , getCookie } from 'cookies-next';
 
 const ContestForm = () => {
-  const [platform, setPlatform] = useState(localStorage?.getItem("platform") || "codeforces"); // Default platform
+  const [platform, setPlatform] = useState(getCookie('platform') || "codeforces"); // Default platform
   const [contests, setContests] = useState([]);
   const [fetchingContests, setFetchingContests] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
@@ -75,7 +76,7 @@ const ContestForm = () => {
           value={platform}
           onChange={(e) => {
             setPlatform(e.target.value);
-            localStorage.setItem("platform" , e.target.value)
+            setCookie('platform' , e.target.value , { maxAge : 60 * 60 * 24 * 120 })
           }}
           className="w-full p-[6.5px] border border-gray-300 rounded-md mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 font-medium"
         >

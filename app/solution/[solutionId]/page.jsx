@@ -15,6 +15,7 @@ import {
   AccordionItemPanel,
 } from "react-accessible-accordion";
 import "react-accessible-accordion/dist/fancy-example.css";
+import { setCookie, getCookie } from "cookies-next";
 
 const Page = () => {
   const [solution, setSolution] = useState({});
@@ -27,9 +28,9 @@ const Page = () => {
 
   const [openStates, setOpenStates] = useState([]);
   const [solutionOpen, setSolutionOpen] = useState(
-    !localStorage?.getItem("solution")
+    !getCookie("solution")
       ? true
-      : localStorage?.getItem("solution") == "true"
+      : getCookie("solution") == "true"
       ? true
       : false
   );
@@ -82,7 +83,7 @@ const Page = () => {
 
   const toggleSolutionAccordion = () => {
     setSolutionOpen(!solutionOpen);
-    localStorage.setItem("solution", !solutionOpen);
+    setCookie("solution", !solutionOpen , { maxAge : 60 * 60 * 24 * 120 });
   };
 
   const handleReaction = async (solutionId, reaction) => {

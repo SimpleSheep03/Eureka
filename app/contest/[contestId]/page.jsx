@@ -1,9 +1,10 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import Loader from '@/components/Loader'
+import { FaExternalLinkAlt } from "react-icons/fa";
+import Loader from "@/components/Loader";
+import QuestionCard from "@/components/QuestionComponent";
 
 const ContestQuestions = () => {
   const { contestId } = useParams();
@@ -33,30 +34,23 @@ const ContestQuestions = () => {
     };
 
     fetchQuestions();
-
   }, [contestId]);
 
-  if (loading) return <Loader/>;
+  if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">
       <div className="bg-gray-900 p-10 text-white w-full  rounded-lg shadow-lg max-w-9/10">
-        <h1 className="text-[35px] font-semibold mb-4 text-white text-center">
+        <h1 className="text-[35px] font-semibold mb-8 text-white text-center">
           {contestName} - Questions
         </h1>
         {questions.length > 0 ? (
-          <ul className="mt-[60px]">
+          <ul className="max-sm:space-y-3 md:space-y-4 lg:space-y-5">
             {questions.map((question, index) => (
-              <div key={index} className="flex flex-wrap mt-10 justify-center mb-7 items-center">
-                <Link
-                  href={`/question/${question._id}`}
-                  className="text-white text-[25px] underline flex items-center text-center"
-                >
-                  {question.title}
-                </Link>
-                <FaExternalLinkAlt style={{ marginLeft: '10px', fontSize: '20px', color: 'white' }} />
-              </div>
+              <li key={index}>
+                <QuestionCard question={question} center={true}/>
+              </li>
             ))}
           </ul>
         ) : (
