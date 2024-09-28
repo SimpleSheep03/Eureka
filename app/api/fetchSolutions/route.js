@@ -7,7 +7,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 export const POST = async (request) => {
   try {
     const data = await request.json();
-    const { questionId, solutionId, size, handle } = data;
+    const { questionId, solutionId, size, handle , pageNo } = data;
     const actualSize = size || 5;
 
     await connectDB();
@@ -79,9 +79,27 @@ export const POST = async (request) => {
         { status: 200 }
       );
     }
+    else if(pageNo){
+      const solutions = await Solution.find()
+      .sort({ netUpvotes: -1, contestDate: -1 })
+      .populate("question")
+      .skip((pageNo - 1) * 10)
+      .limit(actualSize);
+
+      return new Response(
+        JSON.stringify({
+          message: "Solutions fetched successfully",
+          ok: true,
+          solutions,
+          reactions,
+        }),
+        { status: 200 }
+      );
+    }
 
     const solutions = await Solution.find()
-      .sort({ netUpvotes: -1 })
+      .sort({ netUpvotes: -1, contestDate: -1 })
+      .populate("question")
       .limit(actualSize);
 
     return new Response(

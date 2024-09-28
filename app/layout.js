@@ -2,6 +2,7 @@ import React from "react";
 import "@/assets/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import AuthProvider from "@/components/AuthProvider";
+import BackArrow from "@/components/BackArrow";
 
 export const metadata = {
   title: "Eureka",
@@ -16,7 +17,7 @@ const MainLayout = ({ children }) => {
           <div className="min-h-full flex flex-col">
             {/* Navbar */}
             <Navbar />
-            
+            <BackArrow/>
             {/* Content Section */}
             <div className="flex-grow">{children}</div>
           </div>

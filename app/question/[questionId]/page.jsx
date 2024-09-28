@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import Loader from "@/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { MdAddBox } from "react-icons/md";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const page = () => {
   const [question, setQuestion] = useState();
@@ -18,8 +19,8 @@ const page = () => {
   const [contestName, setContestName] = useState("");
   const { data: session } = useSession();
   const handle = session?.username;
-  const [reactions, setReactions] = useState([])
-  const [questionIsRequested , setQuestionIsRequested] = useState(false)
+  const [reactions, setReactions] = useState([]);
+  const [questionIsRequested, setQuestionIsRequested] = useState(false);
 
   useEffect(() => {
     const fetchQuestionData = async () => {
@@ -38,7 +39,7 @@ const page = () => {
           if (data.ok) {
             setQuestion(data.question);
             setContestName(data.contestName);
-            setQuestionIsRequested(data.requested)
+            setQuestionIsRequested(data.requested);
           } else {
             toast.error(data.message);
           }
@@ -78,7 +79,7 @@ const page = () => {
     fetchQuestionData();
     fetchSolutions();
     setLoading(false);
-  }, [handle , session]);
+  }, [handle, session]);
 
   if (loading || !question || !contestName) {
     return <Loader />;
@@ -86,7 +87,6 @@ const page = () => {
 
   // Function to get reaction value for a specific solution
   const getReaction = (solutionId) => {
-
     if (!handle || !reactions || reactions.length == 0) {
       return 0;
     }
@@ -205,8 +205,8 @@ const page = () => {
 
       const data = await res.json();
       if (data.ok) {
-        setQuestion(data.question)
-        setQuestionIsRequested(data.requested)
+        setQuestion(data.question);
+        setQuestionIsRequested(data.requested);
       } else {
         toast.error(data.message);
       }
@@ -224,11 +224,11 @@ const page = () => {
         {/* Display question details */}
         {question && (
           <>
-            <h2 className="text-3xl font-bold mb-5 text-center">
+            <h2 className="text-3xl font-bold mb-5 text-center underline">
               {question.title}
             </h2>
 
-            <div className="mb-10 text-center">
+            <div className="mb-10 text-center underline">
               <span className="text-2xl">
                 <Link href={`/contest/${question.contest}`}>{contestName}</Link>
               </span>
@@ -260,9 +260,7 @@ const page = () => {
                 <MdAddBox
                   onClick={handleRequest}
                   className={`ml-2 cursor-pointer ${
-                    questionIsRequested
-                      ? "text-blue-500"
-                      : "text-white"
+                    questionIsRequested ? "text-blue-500" : "text-white"
                   }`}
                   size={24}
                 />
@@ -296,9 +294,13 @@ const page = () => {
                         key={index}
                         className="mb-6 p-4 border-b border-gray-600"
                       >
-                        <h4 className="text-xl font-semibold underline">
-                          <Link href={`/solution/${solution._id}`}>
+                        <h4 className="text-xl font-semibold underline flex items-center">
+                          <Link
+                            href={`/solution/${solution._id}`}
+                            className="flex items-center"
+                          >
                             {solution.heading}
+                            <FaExternalLinkAlt className="ml-3 text-[15px]" />
                           </Link>
                         </h4>
                         <p className="text-sm mt-2 max-sm:mt-3 underline text-gray-300">

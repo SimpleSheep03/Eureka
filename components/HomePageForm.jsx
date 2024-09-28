@@ -28,7 +28,6 @@ const ContestForm = () => {
 
         const data = await res.json();
         if (data.ok) {
-          console.log(data.message);
           setContests(data.contestArr);
         } else {
           console.log(data.message);
@@ -61,7 +60,7 @@ const ContestForm = () => {
     <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-900 p-8 rounded-lg shadow-md w-full sm:w-4/5 md:w-3/5 md:mt-9 "
+        className="bg-gray-900 p-8 max-sm:pt-[50px] rounded-lg shadow-md w-full sm:w-4/5 md:w-3/5 md:mt-9 "
       >
         <h2 className="text-2xl font-semibold mb-6 text-center text-white">
           Search Solutions for Contest

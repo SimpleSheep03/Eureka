@@ -34,8 +34,6 @@ const Page = () => {
       : false
   );
 
-  console.log(localStorage.getItem("solution"));
-
   useEffect(() => {
     const fetchSolution = async () => {
       try {
