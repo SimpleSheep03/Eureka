@@ -82,7 +82,7 @@ const page = () => {
       setLoading(false);
     };
 
-    fetchData()
+    fetchData();
   }, [handle, session]);
 
   if (loading || !question || !contestName) {
@@ -227,9 +227,13 @@ const page = () => {
         {/* Display question details */}
         {question && (
           <>
-            <h2 className="text-3xl font-bold mb-5 text-center underline">
+            <Link
+              href={question.questionLink}
+              target="__blank"
+              className="text-3xl font-bold mb-5 flex justify-center underline"
+            >
               {question.title}
-            </h2>
+            </Link>
 
             <div className="mb-10 text-center underline">
               <span className="text-2xl">

@@ -116,7 +116,7 @@ const Navbar = () => {
                   ref={menuRef}
                 >
                   <Link
-                    href="/profile"
+                    href={`/profile/${session?.username}`}
                     className="block px-4 py-2 text-sm text-gray-700"
                     role="menuitem"
                     tabIndex="-1"
