@@ -261,7 +261,7 @@ const page = () => {
                   onClick={handleRequest}
                   className={`ml-2 cursor-pointer ${
                     questionIsRequested
-                      ? "text-yellow-500"
+                      ? "text-blue-500"
                       : "text-white"
                   }`}
                   size={24}
@@ -270,12 +270,12 @@ const page = () => {
             )}
 
             <div className="text-center flex items-center max-sm:mb-10">
-              <span className="font-semibold text-">
+              <span className="font-semibold">
                 Have a solution? You can share it
               </span>
               <Link
                 href={`/solution/add/${question._id}`}
-                className="ml-1 underline font-semibold text-xl"
+                className="ml-1 underline font-semibold"
               >
                 here
               </Link>

@@ -2,29 +2,39 @@ import connectDB from "@/config/database";
 import Question from "@/models/Question";
 import Solution from "@/models/Solution";
 import User from "@/models/User";
+import { getSessionUser } from "@/utils/getSessionUser";
 
 export const POST = async (request) => {
   try {
     const data = await request.json();
-    const { questionId, size, handle } = data;
+    const { questionId, solutionId, size, handle } = data;
     const actualSize = size || 5;
 
     await connectDB();
 
     let reactions = [];
-    
+
     if (handle) {
       let user = await User.find({ username: handle });
+      const session = await getSessionUser();
+      if (session.username != handle) {
+        return new Response(
+          JSON.stringify({
+            message: "Unauthorized",
+            ok: false,
+          }),
+          { status: 401 }
+        );
+      }
       if (user.length != 1) {
         return new Response(
           JSON.stringify({ message: "Incorrect input", ok: false }),
           { status: 400 }
         );
       }
-
-      reactions = user[0].reactions
+      reactions = user[0].reactions;
     }
-    
+
     if (questionId) {
       const question = await Question.findById(questionId);
       if (!question) {
@@ -42,7 +52,29 @@ export const POST = async (request) => {
           message: "Solutions fetched successfully",
           ok: true,
           solutions,
-          reactions
+          reactions,
+        }),
+        { status: 200 }
+      );
+    } else if (solutionId) {
+      const solution = await Solution.findById(solutionId);
+      if (!solution) {
+        return new Response(
+          JSON.stringify({ message: "Incorrect input", ok: false }),
+          { status: 400 }
+        );
+      }
+
+      const questionName = await Question.findById(solution.question).then(
+        (doc) => doc.title
+      );
+      return new Response(
+        JSON.stringify({
+          message: "Fetched the solution successfully",
+          ok: true,
+          solution,
+          questionName,
+          reactions,
         }),
         { status: 200 }
       );
@@ -57,7 +89,7 @@ export const POST = async (request) => {
         message: "Solutions fetched successfully",
         ok: true,
         solutions,
-        reactions
+        reactions,
       }),
       { status: 200 }
     );

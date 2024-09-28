@@ -44,14 +44,11 @@ export const POST = async (request) => {
     let flag = 0,
       val;
     for (const reaction of reactions) {
-      console.log(reaction, reaction._id);
       if (reaction._id.toString() === solutionId.toString()) {
         flag = 1; // Set flag if a matching reaction is found
         val = reaction.value;
       }
     }
-
-    console.log(flag , value , val)
 
     if (flag) {
       // Filter out the reaction and update the reactions array

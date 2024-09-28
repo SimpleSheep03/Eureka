@@ -254,7 +254,7 @@ const SolutionFormPage = () => {
               Additional Links
             </label>
             <input
-              type="url"
+              type="text"
               id="additionalLinks"
               name="additionalLinks"
               value={formData.additionalLinks}
