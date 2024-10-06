@@ -5,6 +5,7 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import Image from "next/image";
 import { IoHomeSharp } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter , usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -13,6 +14,8 @@ const Navbar = () => {
   const menuButtonRef = useRef(null);
   const menuRef = useRef(null);
   const profileImage = session?.user?.image;
+  const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const setAuthProviders = async () => {
@@ -45,6 +48,13 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isProfileMenuOpen]);
+
+  useEffect(() => {
+    if(session && !session.username){
+      console.log(session)
+      return router.push('/choose-username')
+    }
+  } , [session , pathname])
 
   return (
     <nav className="navbar bg-stone-200 border-b-2 border-red-100 py-4">
