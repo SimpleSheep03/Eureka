@@ -30,6 +30,7 @@ export const POST = async (request , { params }) => {
       solutionText,
       additionalLinks,
       acceptedCodeLink,
+      preRequisites
     } = data;
     User = User || "Anonymous";
 
@@ -48,7 +49,8 @@ export const POST = async (request , { params }) => {
       solutionHints,
       acceptedCodeLink,
       additionalLinks,
-      contestDate : question.contestDate
+      preRequisites,
+      contestDate : question.contestDate,
     })
 
     await solution.save()

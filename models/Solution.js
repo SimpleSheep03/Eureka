@@ -21,6 +21,9 @@ const SolutionSchema = new Schema(
       type: String,
       required: true,
     },
+    preRequisites : {
+      type : String,
+    },
     solutionHints: [
       {
         type: String,

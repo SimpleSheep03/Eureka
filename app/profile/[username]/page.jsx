@@ -52,9 +52,8 @@ const ProfilePage = () => {
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">
       <Toaster />
-      <div className="bg-gray-900 p-10 text-white w-full  rounded-lg shadow-lg max-w-9/10">
-        <div className="max-sm:max-w-3xl mx-auto rounded-lg shadow-lg p-6">
-          <div className="flex justify-center items-center mb-8">
+      <div className="bg-gray-900 md:p-10 max-sm:py-[50px] text-white w-full shadow-lg max-w-9/10">
+          <div className="flex justify-center items-center mb-10">
             {/* User Image and Name */}
             <div className="flex items-center space-x-8">
               <Image
@@ -86,7 +85,7 @@ const ProfilePage = () => {
 
           {/* Display User Solutions */}
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Solutions</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-center">Solutions</h2>
             {solutions.length > 0 ? (
               <ul className="space-y-4">
                 {solutions.map((solution) => (
@@ -102,7 +101,6 @@ const ProfilePage = () => {
               <p className="text-gray-400">No solutions provided yet.</p>
             )}
           </div>
-        </div>
       </div>
     </div>
   );

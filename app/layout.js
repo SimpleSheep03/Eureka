@@ -22,7 +22,7 @@ const MainLayout = ({ children }) => {
             {/* Content Section */}
             <div className="flex-grow">
               {children}
-              <Analytics />
+              {/* <Analytics /> */}
             </div>
           </div>
         </body>

@@ -7,31 +7,55 @@ import Loader from "@/components/Loader";
 
 const SolutionFormPage = () => {
   const { data: session } = useSession();
-  const { questionId } = useParams();
-  const [question, setQuestion] = useState("");
+  const { solutionId } = useParams();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const router = useRouter()
+  const [questionName , setQuestionName] = useState('')
+  const router = useRouter();
+
+  // State to capture form data
+  const [formData, setFormData] = useState({
+    heading: "",
+    acceptedCodeLink: "",
+    solutionHints: [],
+    hintsCount: 0, // New field to capture number of hints
+    solutionText: "",
+    additionalLinks: "",
+    preRequisites : ""
+  });
 
   useEffect(() => {
-    const fetchQuestionData = async () => {
-      if (questionId) {
+    const fetchSolutionData = async () => {
+      if (!session || !session.username) {
+        return;
+      }
+      if (solutionId) {
         try {
-          const res = await fetch("/api/questionData", {
+          const res = await fetch("/api/fetchSolutions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              questionId,
+              solutionId,
             }),
           });
           const data = await res.json();
           if (data.ok) {
-            setQuestion(data.question);
+            // setSolution(data.solution);
+            setFormData({
+              heading: data.solution.heading,
+              acceptedCodeLink: data.solution.acceptedCodeLink,
+              solutionHints: data.solution.solutionHints,
+              hintsCount: data.solution.solutionHints?.length || 0,
+              solutionText: data.solution.solutionText,
+              additionalLinks: data.solution.additionalLinks,
+              preRequisites : data.solution.preRequisites,
+            });
+            setQuestionName(data.questionName)
           } else {
             toast.error(data.message);
-            console.log(data.message)
+            console.log(data.message);
           }
         } catch (error) {
           console.log(error);
@@ -42,19 +66,8 @@ const SolutionFormPage = () => {
       }
     };
 
-    fetchQuestionData();
-  }, []);
-
-  // State to capture form data
-  const [formData, setFormData] = useState({
-    heading: "",
-    acceptedCodeLink: "",
-    solutionHints: [],
-    hintsCount: 0, // New field to capture number of hints
-    solutionText: "",
-    additionalLinks: "",
-    preRequisites : "",
-  });
+    fetchSolutionData();
+  }, [session]);
 
   // Handle form input changes
   // Handle form input changes
@@ -97,15 +110,19 @@ const SolutionFormPage = () => {
     e.preventDefault();
     setSubmitting(true);
     // Process the form data here
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
+    if(!session){
+      toast.error('Please sign in first')
+      return;
+    }
     try {
-      const res = await fetch(`/api/solution/add/${questionId}`, {
+      const res = await fetch(`/api/solution/edit/${solutionId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          User: session?.username,
+          User: session.username,
           heading: formData.heading,
           solutionHints: formData.solutionHints,
           solutionText: formData.solutionText,
@@ -117,17 +134,8 @@ const SolutionFormPage = () => {
 
       const data = await res.json();
       if (data.ok) {
-        toast.success("Successfully added the solution");
-        setFormData({
-          heading: "",
-          acceptedCodeLink: "",
-          solutionHints: [],
-          hintsCount: 0, // New field to capture number of hints
-          solutionText: "",
-          additionalLinks: "",
-          preRequisites : "",
-        });
-        router.push(`/question/${questionId}`)
+        toast.success("Successfully updated the solution");
+        // router.push(`/profile/${session.username}`);
       } else {
         console.log(data.message);
         toast.error(data.message);
@@ -140,7 +148,9 @@ const SolutionFormPage = () => {
     }
   };
 
-  if (loading || !question || !questionId) {
+  // console.log(solutionId , formData)
+
+  if (loading || !solutionId) {
     return <Loader />;
   }
   return (
@@ -149,11 +159,11 @@ const SolutionFormPage = () => {
       <div className="bg-gray-900 p-10 text-white w-full max-w-9/10 rounded-lg shadow-lg">
         {/* Display the Question Title */}
         <h1 className="text-4xl font-bold mb-10 text-center">
-          {question.title}
+          {questionName}
         </h1>
 
         <h2 className="text-3xl font-bold mb-6 text-center">
-          Submit Your Solution
+          Edit Your Solution
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">

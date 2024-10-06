@@ -6,6 +6,9 @@ import Link from "next/link";
 import Loader from "@/components/Loader";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
+import { HiClipboardCopy } from "react-icons/hi";
+import { IoCheckmark } from "react-icons/io5";
+import { WhatsappIcon, WhatsappShareButton } from "react-share";
 import { useSession } from "next-auth/react";
 import {
   Accordion,
@@ -24,6 +27,7 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
   const [reacted, setReacted] = useState(0);
+  const [copied, setCopied] = useState(false);
   const handle = session?.username;
 
   const [openStates, setOpenStates] = useState([]);
@@ -83,7 +87,7 @@ const Page = () => {
 
   const toggleSolutionAccordion = () => {
     setSolutionOpen(!solutionOpen);
-    setCookie("solution", !solutionOpen , { maxAge : 60 * 60 * 24 * 120 });
+    setCookie("solution", !solutionOpen, { maxAge: 60 * 60 * 24 * 120 });
   };
 
   const handleReaction = async (solutionId, reaction) => {
@@ -123,6 +127,16 @@ const Page = () => {
     }
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    toast.success("URL copied to clipboard");
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000); // Reset the icon back to clipboard after 2 seconds
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -151,28 +165,26 @@ const Page = () => {
                   allowMultipleExpanded={true}
                   allowZeroExpanded={true}
                 >
-                  {solution.solutionHints.map((hint, index) => {
-                    return (
-                      <AccordionItem key={index} className="mb-2">
-                        <AccordionItemHeading
-                          onClick={() => toggleAccordion(index)}
-                        >
-                          <AccordionItemButton className="flex items-center mb-1 w-[75px]">
-                            {/* Dropdown indicator */}
-                            <span className="mr-2">
-                              {openStates[index] ? "▼" : "▶"}
-                            </span>
-                            Hint {index + 1}
-                          </AccordionItemButton>
-                        </AccordionItemHeading>
-                        <AccordionItemPanel className="rounded-sm">
-                          <div className="bg-gray-700 py-1 px-3 rounded-md">
-                            <p className="text-white">{hint}</p>
-                          </div>
-                        </AccordionItemPanel>
-                      </AccordionItem>
-                    );
-                  })}
+                  {solution.solutionHints.map((hint, index) => (
+                    <AccordionItem key={index} className="mb-2">
+                      <AccordionItemHeading
+                        onClick={() => toggleAccordion(index)}
+                      >
+                        <AccordionItemButton className="flex items-center mb-1 w-[75px]">
+                          {/* Dropdown indicator */}
+                          <span className="mr-2">
+                            {openStates[index] ? "▼" : "▶"}
+                          </span>
+                          Hint {index + 1}
+                        </AccordionItemButton>
+                      </AccordionItemHeading>
+                      <AccordionItemPanel className="rounded-sm">
+                        <div className="bg-gray-700 py-1 px-3 rounded-md">
+                          <p className="text-white">{hint}</p>
+                        </div>
+                      </AccordionItemPanel>
+                    </AccordionItem>
+                  ))}
                 </Accordion>
               </div>
             )}
@@ -208,6 +220,25 @@ const Page = () => {
               </div>
             )}
 
+            {/* Share Solution Section */}
+            <div className="my-6 flex items-center">
+              <h4 className="text-lg font-semibold mr-4">Share the solution:</h4>
+              <span onClick={handleCopy} className="cursor-pointer">
+                {copied ? (
+                  <IoCheckmark className="" size={26} />
+                ) : (
+                  <HiClipboardCopy size={26} />
+                )}
+              </span>
+              <WhatsappShareButton
+                url={window.location.href}
+                title={`*${questionName}*\n\n*Solution* : _${solution.solutionText}_\n\n*Check out the complete solution below*`}
+                className="ml-5"
+              >
+                <WhatsappIcon size={26} round />
+              </WhatsappShareButton>
+            </div>
+
             {solution.additionalLinks?.length > 0 && (
               <div className="mt-4">
                 <h4 className="text-lg font-semibold">Additional Links:</h4>
@@ -231,32 +262,18 @@ const Page = () => {
             <div className="mt-6 flex items-center">
               <AiFillLike
                 className={`mr-2 cursor-pointer ${
-                  reacted == 1 ? "text-green-500" : ""
+                  reacted === 1 ? "text-blue-500" : "text-gray-400"
                 }`}
-                onClick={() => handleReaction(solution._id, 1)}
-                size={19}
+                size={26}
+                onClick={() => handleReaction(solutionId, 1)}
               />
-
-              <p
-                className={`text-base mx-2 ${
-                  solution.netUpvotes > 0
-                    ? "text-green-500"
-                    : solution.netUpvotes < 0
-                    ? "text-red-500"
-                    : "text-white"
-                }`}
-              >
-                {solution.netUpvotes <= 0
-                  ? solution.netUpvotes
-                  : `+${solution.netUpvotes}`}
-              </p>
-
+              <span className="mr-4">{solution.netUpvotes}</span>
               <AiFillDislike
-                className={`ml-2 cursor-pointer ${
-                  reacted === -1 ? "text-red-500" : ""
+                className={`mr-2 cursor-pointer ${
+                  reacted === -1 ? "text-red-500" : "text-gray-400"
                 }`}
-                onClick={() => handleReaction(solution._id, -1)}
-                size={19}
+                size={26}
+                onClick={() => handleReaction(solutionId, -1)}
               />
             </div>
 
