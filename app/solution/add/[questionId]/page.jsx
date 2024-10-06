@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const SolutionFormPage = () => {
   const { data: session } = useSession();
@@ -11,7 +12,7 @@ const SolutionFormPage = () => {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const fetchQuestionData = async () => {
@@ -31,7 +32,7 @@ const SolutionFormPage = () => {
             setQuestion(data.question);
           } else {
             toast.error(data.message);
-            console.log(data.message)
+            console.log(data.message);
           }
         } catch (error) {
           console.log(error);
@@ -53,7 +54,7 @@ const SolutionFormPage = () => {
     hintsCount: 0, // New field to capture number of hints
     solutionText: "",
     additionalLinks: "",
-    preRequisites : "",
+    preRequisites: "",
   });
 
   // Handle form input changes
@@ -111,7 +112,7 @@ const SolutionFormPage = () => {
           solutionText: formData.solutionText,
           additionalLinks: formData.additionalLinks,
           acceptedCodeLink: formData.acceptedCodeLink,
-          preRequisites : formData.preRequisites,
+          preRequisites: formData.preRequisites,
         }),
       });
 
@@ -125,9 +126,9 @@ const SolutionFormPage = () => {
           hintsCount: 0, // New field to capture number of hints
           solutionText: "",
           additionalLinks: "",
-          preRequisites : "",
+          preRequisites: "",
         });
-        router.push(`/question/${questionId}`)
+        router.push(`/question/${questionId}`);
       } else {
         console.log(data.message);
         toast.error(data.message);
@@ -148,9 +149,11 @@ const SolutionFormPage = () => {
       <Toaster />
       <div className="bg-gray-900 p-10 text-white w-full max-w-9/10 rounded-lg shadow-lg">
         {/* Display the Question Title */}
-        <h1 className="text-4xl font-bold mb-10 text-center">
-          {question.title}
-        </h1>
+        <Link href={`/question/${questionId}`}>
+          <h1 className="text-4xl font-bold mb-10 text-center underline">
+            {question.title}
+          </h1>
+        </Link>
 
         <h2 className="text-3xl font-bold mb-6 text-center">
           Submit Your Solution

@@ -4,14 +4,16 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const SolutionFormPage = () => {
   const { data: session } = useSession();
   const { solutionId } = useParams();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [questionName , setQuestionName] = useState('')
+  const [questionName, setQuestionName] = useState("");
   const router = useRouter();
+  const [solution , setSolution] = useState({})
 
   // State to capture form data
   const [formData, setFormData] = useState({
@@ -21,7 +23,7 @@ const SolutionFormPage = () => {
     hintsCount: 0, // New field to capture number of hints
     solutionText: "",
     additionalLinks: "",
-    preRequisites : ""
+    preRequisites: "",
   });
 
   useEffect(() => {
@@ -50,9 +52,10 @@ const SolutionFormPage = () => {
               hintsCount: data.solution.solutionHints?.length || 0,
               solutionText: data.solution.solutionText,
               additionalLinks: data.solution.additionalLinks,
-              preRequisites : data.solution.preRequisites,
+              preRequisites: data.solution.preRequisites,
             });
-            setQuestionName(data.questionName)
+            setQuestionName(data.questionName);
+            setSolution(data.solution)
           } else {
             toast.error(data.message);
             console.log(data.message);
@@ -111,8 +114,8 @@ const SolutionFormPage = () => {
     setSubmitting(true);
     // Process the form data here
     // console.log("Form submitted:", formData);
-    if(!session){
-      toast.error('Please sign in first')
+    if (!session) {
+      toast.error("Please sign in first");
       return;
     }
     try {
@@ -128,14 +131,13 @@ const SolutionFormPage = () => {
           solutionText: formData.solutionText,
           additionalLinks: formData.additionalLinks,
           acceptedCodeLink: formData.acceptedCodeLink,
-          preRequisites : formData.preRequisites,
+          preRequisites: formData.preRequisites,
         }),
       });
 
       const data = await res.json();
       if (data.ok) {
         toast.success("Successfully updated the solution");
-        // router.push(`/profile/${session.username}`);
       } else {
         console.log(data.message);
         toast.error(data.message);
@@ -158,9 +160,11 @@ const SolutionFormPage = () => {
       <Toaster />
       <div className="bg-gray-900 p-10 text-white w-full max-w-9/10 rounded-lg shadow-lg">
         {/* Display the Question Title */}
-        <h1 className="text-4xl font-bold mb-10 text-center">
-          {questionName}
-        </h1>
+        <Link href={`/question/${solution.question}`}>
+          <h1 className="text-4xl font-bold mb-10 text-center underline">
+            {questionName}
+          </h1>
+        </Link>
 
         <h2 className="text-3xl font-bold mb-6 text-center">
           Edit Your Solution

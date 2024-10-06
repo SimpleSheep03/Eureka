@@ -38,6 +38,7 @@ const Page = () => {
       ? true
       : false
   );
+  const [preRequisitesOpen, setPreRequisitesOpen] = useState(false); // New state for prerequisites accordion
 
   useEffect(() => {
     const fetchSolution = async () => {
@@ -88,6 +89,10 @@ const Page = () => {
   const toggleSolutionAccordion = () => {
     setSolutionOpen(!solutionOpen);
     setCookie("solution", !solutionOpen, { maxAge: 60 * 60 * 24 * 120 });
+  };
+
+  const togglePreRequisitesAccordion = () => {
+    setPreRequisitesOpen(!preRequisitesOpen); // Toggle prerequisites accordion
   };
 
   const handleReaction = async (solutionId, reaction) => {
@@ -157,6 +162,23 @@ const Page = () => {
                 - {solution.User}
               </h3>
             </Link>
+
+            {solution.preRequisites && (
+              <div className="mt-10 mb-6">
+                <h3
+                  className="font-semibold mb-4 flex items-center cursor-pointer"
+                  onClick={togglePreRequisitesAccordion}
+                >
+                  <span className="mr-2">{preRequisitesOpen ? "▼" : "▶"}</span>
+                  <span>Pre-Requisites:</span>
+                </h3>
+                {preRequisitesOpen && (
+                  <div className="bg-gray-700 py-2 px-3 rounded-md">
+                    <p>{solution.preRequisites}</p>
+                  </div>
+                )}
+              </div>
+            )}
 
             {solution.solutionHints?.length > 0 && (
               <div>
@@ -232,8 +254,7 @@ const Page = () => {
               </span>
               <WhatsappShareButton
                 url={window.location.href}
-                title={`*${questionName}*\n\n*Solution* : _${solution.solutionText}_\n\n*Check out the complete solution below*`}
-                className="ml-5"
+                className="ml-4"
               >
                 <WhatsappIcon size={26} round />
               </WhatsappShareButton>
