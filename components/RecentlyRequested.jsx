@@ -45,8 +45,8 @@ const RecentlyRequested = () => {
   }
 
   return (
-    <div className="flex justify-center items-center md:px-6">
-      <div className="bg-gray-900 p-10 text-white w-full  rounded-lg shadow-lg max-w-9/10">
+    <div className="flex justify-center items-center md:p-6">
+      <div className="bg-gray-900 md:p-10 max-sm:py-[50px] text-white w-full  md:rounded-lg shadow-lg max-w-9/10">
         <Toaster />
         <h2 className="text-2xl font-bold text-center mb-10">
           Recently Requested Questions

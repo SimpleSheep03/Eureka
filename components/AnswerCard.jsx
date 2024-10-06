@@ -5,7 +5,7 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 
 const AnswerCard = ({ answer, edit }) => {
   return (
-    <li className="bg-gray-800 py-4 px-5 rounded-md">
+    <li className="bg-gray-800 md:py-4 md:px-5 max-sm:p-7 rounded-md">
       <div className="flex justify-between items-center mb-5">
         <Link
           href={`/solution/${answer._id}`}
@@ -40,11 +40,11 @@ const AnswerCard = ({ answer, edit }) => {
 
       <div className="mt-2 flex items-center">
         {answer.netUpvotes > 0 ? (
-          <AiFillLike className="text-green-500 mr-1" />
+          <AiFillLike className="text mr-1" />
         ) : answer.netUpvotes < 0 ? (
-          <AiFillDislike className="text-red-500 mr-1" />
+          <AiFillDislike className="text mr-1" />
         ) : null}
-        <span className={`mx-2 ${answer.netUpvotes === 0 ? 'text-white' : ''}`}>
+        <span className={`mx-2 ${answer.netUpvotes > 0 ? 'text-green-500' : answer.netUpvotes < 0 ? 'text-red-500' : ''}`}>
           {answer.netUpvotes <= 0 ? answer.netUpvotes : `+${answer.netUpvotes}`}
         </span>
       </div>

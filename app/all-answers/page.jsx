@@ -84,7 +84,7 @@ const AllAnswers = () => {
 
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">
-      <div className="bg-gray-900 p-10 text-white w-full  rounded-lg shadow-lg max-w-9/10">
+      <div className="bg-gray-900 md:p-10 max-sm:py-[50px] text-white w-full  rounded-lg shadow-lg max-w-9/10">
         <Toaster />
         <h2 className="text-2xl font-semibold text-center mb-5">All Answers</h2>
         {solutions.length > 0 ? (

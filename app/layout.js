@@ -3,6 +3,7 @@ import "@/assets/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import AuthProvider from "@/components/AuthProvider";
 import BackArrow from "@/components/BackArrow";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Eureka",
@@ -19,7 +20,10 @@ const MainLayout = ({ children }) => {
             <Navbar />
             <BackArrow />
             {/* Content Section */}
-            <div className="flex-grow">{children}</div>
+            <div className="flex-grow">
+              {children}
+              <Analytics />
+            </div>
           </div>
         </body>
       </html>
