@@ -3,6 +3,7 @@ import Question from "@/models/Question";
 import Solution from "@/models/Solution";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
+import { decompressFromBase64 } from "lz-string";
 
 export const POST = async (request) => {
   try {
@@ -64,7 +65,7 @@ export const POST = async (request) => {
           { status: 400 }
         );
       }
-
+      solution.solutionText = decompressFromBase64(solution.solutionText)
       const questionName = await Question.findById(solution.question).then(
         (doc) => doc.title
       );

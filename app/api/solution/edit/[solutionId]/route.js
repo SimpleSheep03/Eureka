@@ -1,5 +1,6 @@
 import Solution from "@/models/Solution";
 import { getSessionUser } from "@/utils/getSessionUser";
+import { compressToBase64 } from "lz-string";
 
 export const POST = async (request , { params }) => {
   try {
@@ -39,7 +40,7 @@ export const POST = async (request , { params }) => {
     solution.heading = heading
     solution.preRequisites = preRequisites
     solution.solutionHints = solutionHints
-    solution.solutionText = solutionText
+    solution.solutionText = compressToBase64(solutionText)
     solution.acceptedCodeLink = acceptedCodeLink 
     solution.additionalLinks = additionalLinks
 

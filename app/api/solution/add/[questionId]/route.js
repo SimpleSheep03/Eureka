@@ -1,6 +1,7 @@
 import connectDB from "@/config/database";
 import Question from "@/models/Question";
 import Solution from "@/models/Solution";
+import { compressToBase64 } from "lz-string";
 
 export const POST = async (request , { params }) => {
   try {
@@ -45,7 +46,7 @@ export const POST = async (request , { params }) => {
       User , 
       question : question._id,
       heading ,
-      solutionText,
+      solutionText : compressToBase64(solutionText),
       solutionHints,
       acceptedCodeLink,
       additionalLinks,
