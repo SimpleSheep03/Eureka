@@ -230,7 +230,7 @@ const page = () => {
             <Link
               href={question.questionLink}
               target="__blank"
-              className="text-3xl font-bold mb-5 flex justify-center underline"
+              className="text-3xl font-bold mb-5 flex justify-center underline text-center"
             >
               {question.title}
             </Link>

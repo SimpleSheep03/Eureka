@@ -255,7 +255,7 @@ const Page = () => {
               <WhatsappShareButton
                 url={window.location.href}
                 className="ml-4"
-                title={`*${questionName}*\n\n*Solution* :- ${solution.solutionText}\n\n For complete solution visit`}
+                title={`*${questionName}*\n\n*Solution* :- ${solution.solutionText}\n\n For the complete solution visit`}
                 separator=" : "
               >
                 <WhatsappIcon size={26} round />

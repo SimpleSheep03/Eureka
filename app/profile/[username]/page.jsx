@@ -14,6 +14,7 @@ const ProfilePage = () => {
   const [solutions, setSolutions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reactions, setReactions] = useState([]);
+  const [edit , setEdit] = useState(false)
 
   const fetchUserProfile = async () => {
     setLoading(true);
@@ -39,7 +40,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     fetchUserProfile();
-  }, [username]);
+    if(session && session.username == username){
+      setEdit(true)
+    }
+  }, [username , session]);
 
   if (loading) {
     return <Loader />;
@@ -92,7 +96,7 @@ const ProfilePage = () => {
                   <AnswerCard
                     key={solution._id}
                     answer={solution}
-                    edit={true}
+                    edit={edit}
                     reactions={reactions}
                   />
                 ))}
