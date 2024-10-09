@@ -155,10 +155,12 @@ const Page = () => {
             <div className="text-center mb-5">
               <Link href={`/question/${solution.question}`}>
                 <h2 className=" underline max-sm:mb-3 md:mb-4 text-3xl font-bold">
-                  {questionName} 
+                  {questionName}
                 </h2>
               </Link>
-              <span className="text-[27px] text-gray-50 font-semibold">{"-"} {solution.heading}</span>
+              <span className="text-[27px] text-gray-50 font-semibold">
+                {"-"} {solution.heading}
+              </span>
             </div>
             <Link href={`/profile/${solution.User}`} className="mb-4">
               <h3 className="text-lg mb-5 text-center underline">
@@ -224,7 +226,16 @@ const Page = () => {
               </h3>
               {solutionOpen && (
                 <div className="bg-gray-700 py-2 px-3 rounded-md">
-                  <p>{solution.solutionText || "No solution text available"}</p>
+                  <p>
+                    {solution.solutionText
+                      ? solution.solutionText.split("\n").map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            <br />
+                          </span>
+                        ))
+                      : "No solution text available"}
+                  </p>
                 </div>
               )}
             </div>
