@@ -106,7 +106,7 @@ const ContestForm = () => {
           className="w-full bg-white text-black font-semibold py-[6.5px] rounded-md hover:bg-amber-200 transition"
           disabled={submitting}
         >
-          {submitting ? 'Loading' : 'Submit'}
+          {submitting ? 'Loading' : 'Search'}
         </button>
       </form>
     </div>
