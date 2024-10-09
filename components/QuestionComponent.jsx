@@ -1,5 +1,6 @@
 import React from "react";
 import { IoMdPerson } from "react-icons/io";
+import { AiOutlineSolution } from "react-icons/ai";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from "next/link";
 
@@ -19,8 +20,10 @@ const QuestionCard = ({ question , center }) => {
 
        {/* Requested by section */}
       <div className={`flex ${center ? 'justify-center' : 'ml-2'} items-center text-sm text-gray-400`}>
-        <IoMdPerson className="mr-2 text-lg"  title="Requested by"/>
+        <IoMdPerson className="mx-2 text-lg"  title="Requested by"/>
         <span>{question.requestedBy}</span>
+        <AiOutlineSolution className="ml-4 text-lg" title="Answered by"/>
+        <span className="ml-1">{question.solutions.length}</span>
       </div>
     </div>
   );
