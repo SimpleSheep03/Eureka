@@ -152,11 +152,14 @@ const Page = () => {
         <Toaster />
         {questionName && (
           <>
-            <Link href={`/question/${solution.question}`}>
-              <h2 className="text-3xl font-bold mb-5 text-center underline">
-                {questionName}
-              </h2>
-            </Link>
+            <div className="text-center mb-5">
+              <Link href={`/question/${solution.question}`}>
+                <h2 className=" underline max-sm:mb-3 md:mb-4 text-3xl font-bold">
+                  {questionName} 
+                </h2>
+              </Link>
+              <span className="text-[27px] text-gray-50 font-semibold">{"-"} {solution.heading}</span>
+            </div>
             <Link href={`/profile/${solution.User}`} className="mb-4">
               <h3 className="text-lg mb-5 text-center underline">
                 - {solution.User}
@@ -244,7 +247,9 @@ const Page = () => {
 
             {/* Share Solution Section */}
             <div className="my-6 flex items-center">
-              <h4 className="text-lg font-semibold mr-4">Share the solution:</h4>
+              <h4 className="text-lg font-semibold mr-4">
+                Share the solution:
+              </h4>
               <span onClick={handleCopy} className="cursor-pointer">
                 {copied ? (
                   <IoCheckmark className="" size={26} />
