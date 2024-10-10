@@ -58,7 +58,7 @@ const RecentAnswers = () => {
         {recentAnswers.length > 0 ? (
           <ul className="space-y-4">
             {recentAnswers.map((answer) => (
-              <AnswerCard key={answer._id} answer={answer} reactions = {reactions}/>
+              <AnswerCard key={answer._id} answer={answer} reactions = {reactions} edit={session && session.username == answer.User}/>
             ))}
           </ul>
         ) : (

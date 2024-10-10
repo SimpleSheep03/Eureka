@@ -41,6 +41,15 @@ export const POST = async (request , { params }) => {
         { status: 400 }
       );
     }
+
+    let user
+    if(User != 'Anonymous'){
+      user = await User.find({ username : User })
+      if(!user || user.length != 1){
+        return new Response(JSON.stringify({ message : 'Incorrect input' , ok : false}) , { status : 400 })
+      }
+      user = user[0]
+    }
     
     const solution = new Solution({
       User , 
@@ -51,6 +60,7 @@ export const POST = async (request , { params }) => {
       acceptedCodeLink,
       additionalLinks,
       preRequisites,
+      userPopularity : User == "Anonymous" ? 0 : user.popularity,
       contestDate : question.contestDate,
     })
 

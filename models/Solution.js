@@ -37,6 +37,10 @@ const SolutionSchema = new Schema(
       type: String,
       required : true,
     },
+    userPopularity : {
+      type : Number,
+      required : true
+    },
     comments: [
       {
         type: Schema.Types.ObjectId,

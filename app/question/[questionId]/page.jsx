@@ -10,7 +10,7 @@ import Loader from "@/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { MdAddBox } from "react-icons/md";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import ClipLoader from '@/components/ClipLoader'
+import ClipLoader from "@/components/ClipLoader";
 
 const page = () => {
   const [question, setQuestion] = useState();
@@ -24,7 +24,7 @@ const page = () => {
   const [questionIsRequested, setQuestionIsRequested] = useState(false);
   const [liking, setLiking] = useState(false);
   const [disliking, setDisliking] = useState(false);
-  const [requesting , setRequesting] = useState(false)
+  const [requesting, setRequesting] = useState(false);
 
   useEffect(() => {
     const fetchQuestionData = async () => {
@@ -207,7 +207,7 @@ const page = () => {
       });
       return;
     }
-    setRequesting(true)
+    setRequesting(true);
     try {
       const res = await fetch("/api/requestQuestion", {
         method: "POST",
@@ -230,9 +230,8 @@ const page = () => {
     } catch (error) {
       console.error(error);
       toast.error("An error occurred");
-    }
-    finally{
-      setRequesting(false)
+    } finally {
+      setRequesting(false);
     }
   };
 
@@ -263,7 +262,7 @@ const page = () => {
               <Link
                 href={question.questionLink}
                 target="__blank"
-                className="text-white font-bold underline"
+                className="text-white font-bold underline break-all" // Ensures long words (links) break onto the next line
               >
                 {question.questionLink}
               </Link>
@@ -277,29 +276,31 @@ const page = () => {
 
             {/* Add the new request section here */}
             {session && (
-              <div className="text-center flex items-center mb-4">
+              <div className="flex items-center mb-4">
                 <span className="font-semibold">
                   Need an answer? Request for the question!
                 </span>
-                {!requesting ? <MdAddBox
-                  onClick={handleRequest}
-                  className={`ml-2 cursor-pointer ${
-                    questionIsRequested ? "text-blue-500" : "text-white"
-                  }`}
-                  size={24}
-                /> : <span className="ml-2"><ClipLoader size={20}/></span>}
+                {!requesting ? (
+                  <MdAddBox
+                    onClick={handleRequest}
+                    className={`ml-2 cursor-pointer ${
+                      questionIsRequested ? "text-blue-500" : "text-white"
+                    }`}
+                    size={24}
+                  />
+                ) : (
+                  <span className="ml-2">
+                    <ClipLoader size={20} />
+                  </span>
+                )}
               </div>
             )}
 
-            <div className="text-center flex items-center max-sm:mb-10">
-              <span className="font-semibold">
-                Have a solution? You can share it
-              </span>
+            <div className="text-center flex items-center max-sm:mb-10 ml-1 underline italic font-medium">
               <Link
                 href={`/solution/add/${question._id}`}
-                className="ml-1 underline font-semibold"
               >
-                here
+                Have a solution? You can share it here
               </Link>
             </div>
 
@@ -316,7 +317,7 @@ const page = () => {
                     return (
                       <li
                         key={index}
-                        className="mb-6 p-4 border-b border-gray-600"
+                        className="mb-6 md:p-4 border-b border-gray-600"
                       >
                         <h4 className="text-xl font-semibold underline flex items-center">
                           <Link
@@ -332,13 +333,17 @@ const page = () => {
                             {solution.User}
                           </Link>
                         </p>
-                        <p className="text-[15px] mt-4 max-sm:mt-5 flex items-center">
-                          {!liking ? <AiFillLike
-                            className={`mr-2 cursor-pointer ${
-                              reactionValue === 1 ? "text-green-500" : ""
-                            }`}
-                            onClick={() => handleReaction(solution._id, 1)}
-                          /> : <ClipLoader size={16}/>}
+                        <p className="text-[15px] mt-4 mb-3 max-sm:mt-5 max-sm:mb-4 flex items-center">
+                          {!liking ? (
+                            <AiFillLike
+                              className={`mr-2 cursor-pointer ${
+                                reactionValue === 1 ? "text-green-500" : ""
+                              }`}
+                              onClick={() => handleReaction(solution._id, 1)}
+                            />
+                          ) : (
+                            <ClipLoader size={16} />
+                          )}
                           <div
                             className={
                               solution.netUpvotes > 0
@@ -352,12 +357,16 @@ const page = () => {
                               ? `+${solution.netUpvotes}`
                               : solution.netUpvotes}
                           </div>
-                          {!disliking ? <AiFillDislike
-                            className={`ml-2 cursor-pointer ${
-                              reactionValue === -1 ? "text-red-500" : ""
-                            }`}
-                            onClick={() => handleReaction(solution._id, -1)}
-                          /> : <ClipLoader size={16}/>}
+                          {!disliking ? (
+                            <AiFillDislike
+                              className={`ml-2 cursor-pointer ${
+                                reactionValue === -1 ? "text-red-500" : ""
+                              }`}
+                              onClick={() => handleReaction(solution._id, -1)}
+                            />
+                          ) : (
+                            <ClipLoader size={16} />
+                          )}
                         </p>
                       </li>
                     );

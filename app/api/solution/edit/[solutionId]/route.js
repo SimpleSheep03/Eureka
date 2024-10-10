@@ -1,4 +1,5 @@
 import Solution from "@/models/Solution";
+import UserModel from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { compressToBase64 } from "lz-string";
 
@@ -36,6 +37,12 @@ export const POST = async (request , { params }) => {
       );
     }
 
+    let user = await UserModel.find({ username : User })
+    if(!user || user.length != 1){
+      return new Response(JSON.stringify({ message : 'Incorrect input' , ok : false}) , { status : 400 })
+    }
+    user = user[0]
+    
     const solution = await Solution.findById(solutionId)
     solution.heading = heading
     solution.preRequisites = preRequisites
@@ -43,7 +50,8 @@ export const POST = async (request , { params }) => {
     solution.solutionText = compressToBase64(solutionText)
     solution.acceptedCodeLink = acceptedCodeLink 
     solution.additionalLinks = additionalLinks
-
+    solution.userPopularity = user.popularity
+    
     await solution.save()
 
     return new Response(JSON.stringify({ message : 'Updated the message successfully' , ok : true }) , { status : 200 })
