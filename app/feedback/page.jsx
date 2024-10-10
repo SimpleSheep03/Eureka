@@ -102,7 +102,7 @@ const FeedbackPage = () => {
           ))}
         </div>
         <button className="w-full py-3 rounded-lg font-semibold text-black bg-white hover:bg-amber-200 transition-colors" type="submit" onClick={handleSubmit}>
-          {submitting ? 'Loading' : 'Submit'}
+          {submitting ? 'Loading' : 'Send'}
         </button>
       </div>
     </div>

@@ -304,7 +304,7 @@ const SolutionFormPage = () => {
               className="w-full bg-white text-black font-semibold py-3 rounded-md hover:bg-amber-200 transition"
               disabled={submitting}
             >
-              {submitting ? "Loading" : "Submit Solution"}
+              {submitting ? "Loading" : "Update Solution"}
             </button>
           </div>
         </form>

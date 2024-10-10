@@ -39,7 +39,7 @@ const AnswerCard = ({ answer, edit }) => {
       </div>
 
       <div className="mt-2 flex items-center">
-        {answer.netUpvotes > 0 ? (
+        {answer.netUpvotes >= 0 ? (
           <AiFillLike className="text mr-1" />
         ) : answer.netUpvotes < 0 ? (
           <AiFillDislike className="text mr-1" />
