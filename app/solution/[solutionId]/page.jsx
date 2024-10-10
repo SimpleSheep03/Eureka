@@ -188,7 +188,7 @@ const Page = () => {
             {solution.preRequisites && (
               <div className="mt-10 mb-6">
                 <h3
-                  className="font-semibold mb-4 flex items-center cursor-pointer"
+                  className="font-semibold mb-4 flex items-center cursor-pointer w-[150px]"
                   onClick={togglePreRequisitesAccordion}
                 >
                   <span className="mr-2">{preRequisitesOpen ? "▼" : "▶"}</span>
@@ -258,7 +258,7 @@ const Page = () => {
             </div>
 
             {solution.acceptedCodeLink && (
-              <div className="mt-6 flex items-center flex-wrap">
+              <div className="mt-7 flex items-center flex-wrap">
                 <Link
                   href={solution.acceptedCodeLink}
                   target="__blank"
@@ -323,7 +323,7 @@ const Page = () => {
                 size={26}
                 onClick={() => handleReaction(solutionId, 1)}
               /> : <ClipLoader size={25}/>}
-              <span className="mx-4">{solution.netUpvotes}</span>
+              <span className="mx-4">{solution.netUpvotes > 0 ? `+${solution.netUpvotes}` : solution.netUpvotes}</span>
               {!disliking ? <AiFillDislike
                 className={`cursor-pointer ${
                   reacted === -1 ? "text-red-500" : "text-gray-400"

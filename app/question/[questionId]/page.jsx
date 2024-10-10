@@ -297,9 +297,7 @@ const page = () => {
             )}
 
             <div className="text-center flex items-center max-sm:mb-10 ml-1 underline italic font-medium">
-              <Link
-                href={`/solution/add/${question._id}`}
-              >
+              <Link href={`/solution/add/${question._id}`}>
                 Have a solution? You can share it here
               </Link>
             </div>
@@ -309,6 +307,7 @@ const page = () => {
               <h3 className="text-2xl font-semibold mb-4 text-center">
                 Solutions:
               </h3>
+
               {solutions.length > 0 ? (
                 <ul>
                   {solutions.map((solution, index) => {
@@ -328,31 +327,23 @@ const page = () => {
                             <FaExternalLinkAlt className="ml-3 text-[15px]" />
                           </Link>
                         </h4>
-                        <p className="text-sm mt-2 max-sm:mt-3 underline text-gray-300">
+                        <p className="text-sm mt-4 max-sm:mt-4 underline text-gray-300">
                           <Link href={`/profile/${solution.User}`}>
                             {solution.User}
                           </Link>
                         </p>
-                        <p className="text-[15px] mt-4 mb-3 max-sm:mt-5 max-sm:mb-4 flex items-center">
+                        <p className="text-[15px] mt-5 mb-3 max-sm:mt-5 max-sm:mb-4 flex items-center">
                           {!liking ? (
                             <AiFillLike
                               className={`mr-2 cursor-pointer ${
-                                reactionValue === 1 ? "text-green-500" : ""
+                                reactionValue === 1 ? "text-blue-500" : ""
                               }`}
                               onClick={() => handleReaction(solution._id, 1)}
                             />
                           ) : (
                             <ClipLoader size={16} />
                           )}
-                          <div
-                            className={
-                              solution.netUpvotes > 0
-                                ? "text-green-500 mx-4"
-                                : solution.netUpvotes < 0
-                                ? "text-orange-200 mx-4"
-                                : "text-white mx-4"
-                            }
-                          >
+                          <div className="mx-4">
                             {solution.netUpvotes > 0
                               ? `+${solution.netUpvotes}`
                               : solution.netUpvotes}
