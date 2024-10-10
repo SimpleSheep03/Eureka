@@ -257,7 +257,7 @@ const page = () => {
               </span>
             </div>
 
-            <div className="mb-5">
+            <div className="mb-6 max-sm:mb-7">
               <span className="font-semibold">Question Link: </span>
               <Link
                 href={question.questionLink}
@@ -268,7 +268,7 @@ const page = () => {
               </Link>
             </div>
 
-            <div className="mb-8 flex items-center">
+            <div className="mb-6 max-sm:mb-7 flex items-center">
               <span className="font-semibold">Requested By: </span>
               <span className="ml-2">{question.requestedBy || "None"}</span>
               <IoMdPerson className={`text-white ml-2`} />
@@ -276,7 +276,7 @@ const page = () => {
 
             {/* Add the new request section here */}
             {session && (
-              <div className="flex items-center mb-4">
+              <div className="flex items-center mb-6 max-sm:7">
                 <span className="font-semibold">
                   Need an answer? Request for the question!
                 </span>
@@ -304,7 +304,7 @@ const page = () => {
 
             {/* Display solutions */}
             <div className="mt-6">
-              <h3 className="text-2xl font-semibold mb-4 text-center">
+              <h3 className="text-2xl font-semibold mb-6 text-center">
                 Solutions:
               </h3>
 
