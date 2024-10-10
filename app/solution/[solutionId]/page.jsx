@@ -19,6 +19,7 @@ import {
 } from "react-accessible-accordion";
 import "react-accessible-accordion/dist/fancy-example.css";
 import { setCookie, getCookie } from "cookies-next";
+import ClipLoader from '@/components/ClipLoader'
 
 const Page = () => {
   const [solution, setSolution] = useState({});
@@ -39,6 +40,8 @@ const Page = () => {
       : false
   );
   const [preRequisitesOpen, setPreRequisitesOpen] = useState(false); // New state for prerequisites accordion
+  const [liking , setLiking] = useState(false)
+  const [disliking , setDisliking] = useState(false)
 
   useEffect(() => {
     const fetchSolution = async () => {
@@ -106,6 +109,12 @@ const Page = () => {
       });
       return;
     }
+    if(reaction == 1){
+      setLiking(true)
+    }
+    else if(reaction == -1){
+      setDisliking(true)
+    }
 
     try {
       const res = await fetch("/api/reactToSolution", {
@@ -129,6 +138,14 @@ const Page = () => {
     } catch (error) {
       console.log(error);
       toast.error("An error occurred while updating reaction");
+    }
+    finally{
+      if(reaction == 1){
+        setLiking(false)
+      }
+      else if(reaction == -1){
+        setDisliking(false)
+      }
     }
   };
 
@@ -299,21 +316,21 @@ const Page = () => {
             )}
 
             <div className="mt-6 flex items-center">
-              <AiFillLike
-                className={`mr-2 cursor-pointer ${
+              {!liking ? <AiFillLike
+                className={`cursor-pointer ${
                   reacted === 1 ? "text-blue-500" : "text-gray-400"
                 }`}
                 size={26}
                 onClick={() => handleReaction(solutionId, 1)}
-              />
-              <span className="mr-4">{solution.netUpvotes}</span>
-              <AiFillDislike
-                className={`mr-2 cursor-pointer ${
+              /> : <ClipLoader size={25}/>}
+              <span className="mx-4">{solution.netUpvotes}</span>
+              {!disliking ? <AiFillDislike
+                className={`cursor-pointer ${
                   reacted === -1 ? "text-red-500" : "text-gray-400"
                 }`}
                 size={26}
                 onClick={() => handleReaction(solutionId, -1)}
-              />
+              /> : <ClipLoader size={23}/>}
             </div>
 
             <div className="mt-8">

@@ -10,6 +10,7 @@ import Loader from "@/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { MdAddBox } from "react-icons/md";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import ClipLoader from '@/components/ClipLoader'
 
 const page = () => {
   const [question, setQuestion] = useState();
@@ -21,6 +22,9 @@ const page = () => {
   const handle = session?.username;
   const [reactions, setReactions] = useState([]);
   const [questionIsRequested, setQuestionIsRequested] = useState(false);
+  const [liking, setLiking] = useState(false);
+  const [disliking, setDisliking] = useState(false);
+  const [requesting , setRequesting] = useState(false)
 
   useEffect(() => {
     const fetchQuestionData = async () => {
@@ -111,7 +115,11 @@ const page = () => {
       });
       return;
     }
-
+    if (value == 1) {
+      setLiking(true);
+    } else if (value == -1) {
+      setDisliking(true);
+    }
     try {
       const res = await fetch("/api/reactToSolution", {
         method: "POST",
@@ -178,6 +186,12 @@ const page = () => {
     } catch (error) {
       toast.error("An error occurred");
       console.error(error);
+    } finally {
+      if (value == 1) {
+        setLiking(false);
+      } else if (value == -1) {
+        setDisliking(false);
+      }
     }
   };
 
@@ -193,7 +207,7 @@ const page = () => {
       });
       return;
     }
-
+    setRequesting(true)
     try {
       const res = await fetch("/api/requestQuestion", {
         method: "POST",
@@ -216,6 +230,9 @@ const page = () => {
     } catch (error) {
       console.error(error);
       toast.error("An error occurred");
+    }
+    finally{
+      setRequesting(false)
     }
   };
 
@@ -264,13 +281,13 @@ const page = () => {
                 <span className="font-semibold">
                   Need an answer? Request for the question!
                 </span>
-                <MdAddBox
+                {!requesting ? <MdAddBox
                   onClick={handleRequest}
                   className={`ml-2 cursor-pointer ${
                     questionIsRequested ? "text-blue-500" : "text-white"
                   }`}
                   size={24}
-                />
+                /> : <span className="ml-2"><ClipLoader size={20}/></span>}
               </div>
             )}
 
@@ -316,31 +333,31 @@ const page = () => {
                           </Link>
                         </p>
                         <p className="text-[15px] mt-4 max-sm:mt-5 flex items-center">
-                          <AiFillLike
+                          {!liking ? <AiFillLike
                             className={`mr-2 cursor-pointer ${
                               reactionValue === 1 ? "text-green-500" : ""
                             }`}
                             onClick={() => handleReaction(solution._id, 1)}
-                          />
+                          /> : <ClipLoader size={16}/>}
                           <div
                             className={
                               solution.netUpvotes > 0
-                                ? "text-green-500"
+                                ? "text-green-500 mx-4"
                                 : solution.netUpvotes < 0
-                                ? "text-orange-200"
-                                : "text-white"
+                                ? "text-orange-200 mx-4"
+                                : "text-white mx-4"
                             }
                           >
                             {solution.netUpvotes > 0
                               ? `+${solution.netUpvotes}`
                               : solution.netUpvotes}
                           </div>
-                          <AiFillDislike
+                          {!disliking ? <AiFillDislike
                             className={`ml-2 cursor-pointer ${
                               reactionValue === -1 ? "text-red-500" : ""
                             }`}
                             onClick={() => handleReaction(solution._id, -1)}
-                          />
+                          /> : <ClipLoader size={16}/>}
                         </p>
                       </li>
                     );
