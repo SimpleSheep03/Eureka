@@ -1,6 +1,7 @@
 import connectDB from "@/config/database";
 import Question from "@/models/Question";
 import Solution from "@/models/Solution";
+import UserModel from "@/models/User"
 import { compressToBase64 } from "lz-string";
 
 export const POST = async (request , { params }) => {
@@ -44,7 +45,7 @@ export const POST = async (request , { params }) => {
 
     let user
     if(User != 'Anonymous'){
-      user = await User.find({ username : User })
+      user = await UserModel.find({ username : User })
       if(!user || user.length != 1){
         return new Response(JSON.stringify({ message : 'Incorrect input' , ok : false}) , { status : 400 })
       }
