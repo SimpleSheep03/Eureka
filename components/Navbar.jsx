@@ -5,7 +5,7 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import Image from "next/image";
 import { IoHomeSharp } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
-import { useRouter , usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -14,8 +14,8 @@ const Navbar = () => {
   const menuButtonRef = useRef(null);
   const menuRef = useRef(null);
   const profileImage = session?.user?.image;
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const setAuthProviders = async () => {
@@ -50,11 +50,11 @@ const Navbar = () => {
   }, [isProfileMenuOpen]);
 
   useEffect(() => {
-    if(session && !session.username){
-      console.log(session)
-      return router.push('/choose-username')
+    if (session && !session.username) {
+      console.log(session);
+      return router.push("/choose-username");
     }
-  } , [session , pathname])
+  }, [session, pathname]);
 
   return (
     <nav className="navbar bg-stone-200 border-b-2 border-red-100 py-4">
@@ -83,14 +83,13 @@ const Navbar = () => {
           {/* Conditional Rendering for Sign In or Profile */}
           {!session ? (
             <button
-            className="flex items-center space-x-2 rounded-lg border border-orange-500 py-2 px-4 font-sans text-xs font-bold uppercase text-orange-500 transition-all hover:opacity-75 focus:ring focus:ring-pink-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            disabled={!providers?.google}
-            onClick={() => signIn(providers?.google.id)}
-          >
-            <FcGoogle className="text-xl" />
-            <span>Sign In</span>
-          </button>
-          
+              className="flex items-center space-x-2 rounded-lg border border-orange-500 py-2 px-4 font-sans text-xs font-bold uppercase text-orange-500 transition-all hover:opacity-75 focus:ring focus:ring-pink-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              disabled={!providers?.google}
+              onClick={() => signIn(providers?.google.id)}
+            >
+              <FcGoogle className="text-xl" />
+              <span>Sign In</span>
+            </button>
           ) : (
             <div className="relative">
               <button
@@ -134,6 +133,16 @@ const Navbar = () => {
                     onClick={() => setIsProfileMenuOpen(false)}
                   >
                     Your Profile
+                  </Link>
+                  <Link
+                    href={`/recentQuestions`}
+                    className="block px-4 py-2 text-sm text-gray-700"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="user-menu-item-0"
+                    onClick={() => setIsProfileMenuOpen(false)}
+                  >
+                    View / Post Solutions
                   </Link>
                   <Link
                     href="/feedback"

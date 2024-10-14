@@ -4,7 +4,7 @@ import { AiOutlineSolution } from "react-icons/ai";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from "next/link";
 
-const QuestionCard = ({ question , center }) => {
+const QuestionCard = ({ question , center , contestNameDisplay }) => {
   return (
     <div className={`bg-gray-800 md:p-5 max-sm:p-6 rounded-sm shadow-lg ${center ? 'md:w-9/12' : ''} mx-auto text-white`}>
       <div className={`flex flex-wrap ${center ? 'justify-center' : 'ml-2'} items-center mb-4`}>
@@ -17,6 +17,15 @@ const QuestionCard = ({ question , center }) => {
           <FaExternalLinkAlt className="ml-2 text-[18px]" />
         </Link>
       </div>
+
+      {contestNameDisplay && <div className={`flex flex-wrap ${center ? 'justify-center' : 'ml-2'} items-center mb-6`}>
+        <Link
+          href={`/contest/${question.contest}`}
+          className="text-white text-[17px] flex items-center"
+        >
+          {question.contestName}
+        </Link>
+      </div>}
 
        {/* Requested by section */}
       <div className={`flex ${center ? 'justify-center' : 'ml-2'} items-center text-sm text-gray-400`}>

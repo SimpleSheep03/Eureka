@@ -28,6 +28,9 @@ const QuestionSchema = new Schema(
     contestDate : {
       type : String,
       required : true
+    },
+    contestName : {
+      type : String,
     }
   },
   {

@@ -49,14 +49,14 @@ const RecentlyRequested = () => {
       <div className="bg-gray-900 md:p-10 max-sm:py-[50px] text-white w-full  md:rounded-lg shadow-lg max-w-9/10">
         <Toaster />
         <h2 className="text-2xl font-bold text-center mb-10">
-          Recently Requested Questions
+          Recent Questions
         </h2>
 
         {questions.length > 0 ? (
           <ul className="space-y-4">
             {questions.map((question) => (
               <li key={question._id}>
-                <QuestionCard question={question} center={false} />
+                <QuestionCard question={question} center={false} contestNameDisplay={true} />
               </li>
             ))}
           </ul>
@@ -64,7 +64,7 @@ const RecentlyRequested = () => {
           <p className="text-center">No questions found.</p>
         )}
         <div className="mt-4 flex items-center justify-end">
-          <Link href="/requestedQuestions" className="flex items-center text-white">
+          <Link href="/recentQuestions" className="flex items-center text-white">
             <span className="mr-2 text-lg underline">View All</span>
             <FaLongArrowAltRight/>
           </Link>

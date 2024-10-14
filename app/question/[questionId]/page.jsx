@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import Loader from "@/components/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { MdAddBox } from "react-icons/md";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt, FaLightbulb } from "react-icons/fa";
 import ClipLoader from "@/components/ClipLoader";
 
 const page = () => {
@@ -296,9 +296,13 @@ const page = () => {
               </div>
             )}
 
-            <div className="text-center flex items-center max-sm:mb-10 ml-1 underline italic font-medium">
-              <Link href={`/solution/add/${question._id}`}>
-                Have a solution? You can share it here
+            <div className="text-center flex items-center max-sm:mb-10 ml-1 font-semibold text-[20px]">
+              <Link
+                href={`/solution/add/${question._id}`}
+                className="flex items-center text-teal-400 hover:text-teal-300 underline"
+              >
+                <FaLightbulb className="mr-2" />
+                Got a solution? Share it now!
               </Link>
             </div>
 

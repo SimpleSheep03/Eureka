@@ -19,7 +19,9 @@ export const POST = async(request) => {
         const question = new Question({
             contest : contestId,
             questionLink,
-            title : questionTitle
+            title : questionTitle,
+            contestDate : contest.contestDate,
+            contestName : contest.title
         })
 
         await question.save()

@@ -21,7 +21,7 @@ const RequestedQuestions = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pageNo: 1 , size : 10 }), // Send the current page number
+        body: JSON.stringify({ pageNo: 1, size: 10 }), // Send the current page number
       });
 
       const data = await response.json();
@@ -50,17 +50,21 @@ const RequestedQuestions = () => {
 
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">
-      <div className="bg-gray-900 md:p-10 max-sm:py-[50px] text-white w-full  rounded-lg shadow-lg max-w-9/10">
+      <div className="bg-gray-900 md:p-10 max-sm:py-[50px] text-white w-full rounded-lg shadow-lg max-w-9/10">
         <Toaster />
-        <h1 className="text-3xl font-bold text-center mb-10">
-          Requested Questions
+        <h1 className="text-3xl font-bold text-center mb-4">
+          Recent Questions
         </h1>
+        <p className="text-center mb-10 text-[18px] max-sm:px-4">
+          Choose a question below to explore detailed solutions or share your
+          own insights and help others!
+        </p>
 
         {questions.length > 0 ? (
           <ul className="space-y-8">
             {questions.map((question) => (
               <li key={question._id}>
-                <QuestionComponent question={question} />
+                <QuestionComponent question={question} contestNameDisplay={true}/>
               </li>
             ))}
           </ul>

@@ -39,7 +39,8 @@ export const POST = async(request) => {
                 contest : contest._id,
                 questionLink : questions[i].link,
                 title : questions[i].title,
-                contestDate : contest.contestDate
+                contestDate : contest.contestDate,
+                contestName : contest.title
             })
 
             await question.save()
