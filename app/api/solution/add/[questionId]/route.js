@@ -63,6 +63,7 @@ export const POST = async (request , { params }) => {
       preRequisites,
       userPopularity : User == "Anonymous" ? 0 : user.popularity,
       contestDate : question.contestDate,
+      contestName : question.contestName
     })
 
     await solution.save()

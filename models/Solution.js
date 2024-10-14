@@ -50,6 +50,10 @@ const SolutionSchema = new Schema(
     contestDate : {
       type : String,
       required : true
+    },
+    contestName : {
+      type : String , 
+      required : true
     }
 
   },

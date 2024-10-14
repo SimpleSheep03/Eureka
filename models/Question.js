@@ -31,6 +31,7 @@ const QuestionSchema = new Schema(
     },
     contestName : {
       type : String,
+      required : true,
     }
   },
   {

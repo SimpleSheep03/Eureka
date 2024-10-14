@@ -169,14 +169,19 @@ const Page = () => {
         <Toaster />
         {questionName && (
           <>
-            <div className="text-center mb-5">
-              <Link href={`/question/${solution.question}`}>
-                <h2 className=" underline max-sm:mb-3 md:mb-4 text-3xl font-bold">
-                  {questionName}
+            <div className="text-center mb-4">
+                <h2 className="mb-5 text-3xl font-bold">
+                  {solution.heading}
                 </h2>
-              </Link>
-              <span className="text-[27px] text-gray-50 font-semibold">
-                {"-"} {solution.heading}
+              <span className="max-sm:text-[19px] md:text-[22px] text-gray-50 font-semibold">
+                <Link href={`/question/${solution.question}`}>
+                  {`- ${questionName}`}
+                </Link>
+              </span>
+              <span className="mt-3 block max-sm:text-[19px] md:text-[22px] text-gray-50 font-semibold">
+                {/* <Link href={`/`}> */}
+                  ({solution.contestName})
+                {/* </Link> */}
               </span>
             </div>
             <Link href={`/profile/${solution.User}`} className="mb-4">
