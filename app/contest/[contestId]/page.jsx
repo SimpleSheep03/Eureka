@@ -41,8 +41,8 @@ const ContestQuestions = () => {
 
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">
-      <div className="bg-gray-900 p-10 text-white w-full  rounded-lg shadow-lg max-w-9/10">
-        <h1 className="text-[35px] font-semibold mb-8 text-white text-center">
+      <div className="bg-gray-900 md:p-10 text-white w-full  rounded-lg shadow-lg max-w-9/10">
+        <h1 className="text-[35px] font-semibold mb-8 mt-10 text-white text-center">
           {contestName} - Questions
         </h1>
         {questions.length > 0 ? (

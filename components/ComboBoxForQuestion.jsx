@@ -1,18 +1,18 @@
-'use client'
-import React, { useEffect, useState } from "react";
-import Select from "react-select";
+import React, { useEffect, useState } from 'react'
+import Select from 'react-select';
 
-const SelectComponent = ({ fetchColourOptions, onOptionSelect }) => {
-  const [colourOptions, setColourOptions] = useState([]);
+const ComboBoxForQuestion = ({questions , onOptionSelect}) => {
+
+  const [colourOptions , setColourOptions] = useState([])
   const [selectedOption, setSelectedOption] = useState(null); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (fetchColourOptions.length > 0) {
-      setColourOptions(fetchColourOptions);
-      setLoading(false);
+    if(questions && questions.length > 0){
+      setColourOptions(questions)
+      setLoading(false)
     }
-  }, [fetchColourOptions]);
+  } , [questions])
 
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
@@ -30,7 +30,7 @@ const SelectComponent = ({ fetchColourOptions, onOptionSelect }) => {
       </div>
     );
   }
-  console.log(colourOptions)
+
   return (
     <>
       <Select
@@ -39,17 +39,17 @@ const SelectComponent = ({ fetchColourOptions, onOptionSelect }) => {
         placeholder={
           `Eg - ${colourOptions[0].label}`
         }
-        value={selectedOption}
-        onChange={handleSelectChange} 
+        value={selectedOption} // No default value, placeholder will show
+        onChange={handleSelectChange} // Call handler on change
         isClearable={true}
         isSearchable={true}
         isDisabled={!colourOptions.length}
-        name="contest"
+        name="question"
         options={colourOptions}
         required
       />
     </>
   );
-};
+}
 
-export default SelectComponent;
+export default ComboBoxForQuestion

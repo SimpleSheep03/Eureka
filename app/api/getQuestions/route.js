@@ -6,7 +6,15 @@ export const GET = async (request) => {
   try {
     // Extract the query parameters from the URL
     const { searchParams } = new URL(request.url);
-    const contestId = searchParams.get("contestId"); // Get 'contestId' from query params
+    const contestId = searchParams.get("contestId"); 
+    const platform = searchParams.get("platform")
+
+    if(platform == "all"){
+      const questionsArr = await Question.find({})
+      let questions = questionsArr.map((question) => {return { value : question._id , label : question.title , contestDate : question.contestDate }})
+      questions.sort((a , b) => b.contestDate - a.contestDate)
+      return new Response(JSON.stringify({ message : 'Fetched the questions successfully' , ok : true , questions }) , { status : 200 })
+    }
 
     if (!contestId) {
       return new Response(
@@ -51,7 +59,6 @@ export const POST = async (request) => {
   try {
     const data = await request.json();
     const { size, pageNo } = data;
-    console.log(pageNo)
 
     await connectDB();
 
