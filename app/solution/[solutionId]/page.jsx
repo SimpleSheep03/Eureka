@@ -179,9 +179,9 @@ const Page = () => {
                 </Link>
               </span>
               <span className="mt-3 block max-sm:text-[19px] md:text-[22px] text-gray-50 font-semibold">
-                {/* <Link href={`/`}> */}
+                <Link href={`/contest/${solution.contest}`}>
                   ({solution.contestName})
-                {/* </Link> */}
+                </Link>
               </span>
             </div>
             <Link href={`/profile/${solution.User}`} className="mb-4">

@@ -54,6 +54,11 @@ const SolutionSchema = new Schema(
     contestName : {
       type : String , 
       required : true
+    },
+    contest: {
+      type: Schema.Types.ObjectId,
+      ref: "Contest",
+      required: true,
     }
 
   },

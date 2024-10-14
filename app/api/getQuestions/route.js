@@ -51,6 +51,7 @@ export const POST = async (request) => {
   try {
     const data = await request.json();
     const { size, pageNo } = data;
+    console.log(pageNo)
 
     await connectDB();
 

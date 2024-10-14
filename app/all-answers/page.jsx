@@ -26,7 +26,7 @@ const AllAnswers = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            pageNo: 1,
+            pageNo,
             size: 10,
             handle: session?.username,
           }), // Start at page 1

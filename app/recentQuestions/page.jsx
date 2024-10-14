@@ -21,7 +21,7 @@ const RequestedQuestions = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pageNo: 1, size: 10 }), // Send the current page number
+        body: JSON.stringify({ pageNo, size: 10 }), // Send the current page number
       });
 
       const data = await response.json();
@@ -48,6 +48,33 @@ const RequestedQuestions = () => {
     return <Loader />; // Show loader while fetching data
   }
 
+  const handlePageChange = async (pageNum) => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/getQuestions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ pageNo : pageNum , size: 10 }), // Send the current page number
+      });
+
+      const data = await response.json();
+      if (data.ok) {
+        setQuestions(data.questions);
+        setLastPage(data.lastPage);
+        setPageNo(pageNum)
+      } else {
+        toast.error(data.message || "Failed to fetch questions");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while fetching questions");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">
       <div className="bg-gray-900 md:p-10 max-sm:py-[50px] text-white w-full rounded-lg shadow-lg max-w-9/10">
@@ -64,7 +91,10 @@ const RequestedQuestions = () => {
           <ul className="space-y-8">
             {questions.map((question) => (
               <li key={question._id}>
-                <QuestionComponent question={question} contestNameDisplay={true}/>
+                <QuestionComponent
+                  question={question}
+                  contestNameDisplay={true}
+                />
               </li>
             ))}
           </ul>
