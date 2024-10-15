@@ -296,12 +296,12 @@ const page = () => {
               </div>
             )}
 
-            <div className="text-center flex items-center max-sm:mb-10 ml-1 font-semibold text-[20px]">
+            <div className="flex items-center max-sm:mb-10 ml-1 font-semibold text-[20px]">
               <Link
                 href={`/solution/add/${question._id}`}
                 className="flex items-center text-teal-400 hover:text-teal-300 underline"
               >
-                <FaLightbulb className="mr-2" />
+                <FaLightbulb className="md:mr-2 max-sm:mr-3" />
                 Got a solution? Share it now!
               </Link>
             </div>

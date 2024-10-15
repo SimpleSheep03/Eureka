@@ -19,7 +19,7 @@ import {
 } from "react-accessible-accordion";
 import "react-accessible-accordion/dist/fancy-example.css";
 import { setCookie, getCookie } from "cookies-next";
-import ClipLoader from '@/components/ClipLoader'
+import ClipLoader from "@/components/ClipLoader";
 
 const Page = () => {
   const [solution, setSolution] = useState({});
@@ -40,8 +40,8 @@ const Page = () => {
       : false
   );
   const [preRequisitesOpen, setPreRequisitesOpen] = useState(false); // New state for prerequisites accordion
-  const [liking , setLiking] = useState(false)
-  const [disliking , setDisliking] = useState(false)
+  const [liking, setLiking] = useState(false);
+  const [disliking, setDisliking] = useState(false);
 
   useEffect(() => {
     const fetchSolution = async () => {
@@ -109,11 +109,10 @@ const Page = () => {
       });
       return;
     }
-    if(reaction == 1){
-      setLiking(true)
-    }
-    else if(reaction == -1){
-      setDisliking(true)
+    if (reaction == 1) {
+      setLiking(true);
+    } else if (reaction == -1) {
+      setDisliking(true);
     }
 
     try {
@@ -138,13 +137,11 @@ const Page = () => {
     } catch (error) {
       console.log(error);
       toast.error("An error occurred while updating reaction");
-    }
-    finally{
-      if(reaction == 1){
-        setLiking(false)
-      }
-      else if(reaction == -1){
-        setDisliking(false)
+    } finally {
+      if (reaction == 1) {
+        setLiking(false);
+      } else if (reaction == -1) {
+        setDisliking(false);
       }
     }
   };
@@ -170,9 +167,7 @@ const Page = () => {
         {questionName && (
           <>
             <div className="text-center mb-4">
-                <h2 className="mb-5 text-3xl font-bold">
-                  {solution.heading}
-                </h2>
+              <h2 className="mb-5 text-3xl font-bold">{solution.heading}</h2>
               <span className="max-sm:text-[19px] md:text-[22px] text-gray-50 font-semibold">
                 <Link href={`/question/${solution.question}`}>
                   {`- ${questionName}`}
@@ -303,39 +298,59 @@ const Page = () => {
             {solution.additionalLinks?.length > 0 && (
               <div className="mt-4">
                 <h4 className="text-lg font-semibold">Additional Links:</h4>
-                <ul className="list-disc pl-5 space-y-2">
-                  {solution.additionalLinks.map((link, index) => (
-                    <li key={index}>
-                      <a
-                        href={link}
-                        target="_blank"
-                        className="text-blue-500 underline"
-                        rel="noopener noreferrer"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <p className="mt-2 bg-gray-700 py-2 px-3 rounded-md">
+                  {/* Split the text and link using regex */}
+                  {solution.additionalLinks
+                    .split(/(https?:\/\/[^\s]+)/g)
+                    .map((part, index) =>
+                      // Check if the part is a link
+                      part.match(/https?:\/\/[^\s]+/) ? (
+                        <Link
+                          key={index}
+                          href={part}
+                          target="__blank"
+                          rel="noopener noreferrer"
+                          className="underline break-all"
+                        >
+                          {part}
+                        </Link>
+                      ) : (
+                        // Otherwise, render the plain text
+                        <span key={index}>{part}</span>
+                      )
+                    )}
+                </p>
               </div>
             )}
 
             <div className="mt-6 flex items-center">
-              {!liking ? <AiFillLike
-                className={`cursor-pointer ${
-                  reacted === 1 ? "text-blue-500" : "text-gray-400"
-                }`}
-                size={26}
-                onClick={() => handleReaction(solutionId, 1)}
-              /> : <ClipLoader size={25}/>}
-              <span className="mx-4">{solution.netUpvotes > 0 ? `+${solution.netUpvotes}` : solution.netUpvotes}</span>
-              {!disliking ? <AiFillDislike
-                className={`cursor-pointer ${
-                  reacted === -1 ? "text-red-500" : "text-gray-400"
-                }`}
-                size={26}
-                onClick={() => handleReaction(solutionId, -1)}
-              /> : <ClipLoader size={23}/>}
+              {!liking ? (
+                <AiFillLike
+                  className={`cursor-pointer ${
+                    reacted === 1 ? "text-blue-500" : "text-gray-400"
+                  }`}
+                  size={26}
+                  onClick={() => handleReaction(solutionId, 1)}
+                />
+              ) : (
+                <ClipLoader size={25} />
+              )}
+              <span className="mx-4">
+                {solution.netUpvotes > 0
+                  ? `+${solution.netUpvotes}`
+                  : solution.netUpvotes}
+              </span>
+              {!disliking ? (
+                <AiFillDislike
+                  className={`cursor-pointer ${
+                    reacted === -1 ? "text-red-500" : "text-gray-400"
+                  }`}
+                  size={26}
+                  onClick={() => handleReaction(solutionId, -1)}
+                />
+              ) : (
+                <ClipLoader size={23} />
+              )}
             </div>
 
             <div className="mt-8">
