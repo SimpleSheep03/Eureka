@@ -296,7 +296,7 @@ const page = () => {
               </div>
             )}
 
-            <div className="text-center flex items-center max-sm:mb-10 ml-1 font-semibold text-[19px]">
+            <div className="text-center flex items-center max-sm:mb-10 ml-1 font-semibold text-[20px]">
               <Link
                 href={`/solution/add/${question._id}`}
                 className="flex items-center text-teal-400 hover:text-teal-300 underline"
