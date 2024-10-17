@@ -13,7 +13,7 @@ const SolutionFormPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [questionName, setQuestionName] = useState("");
   const router = useRouter();
-  const [solution , setSolution] = useState({})
+  const [solution, setSolution] = useState({});
 
   // State to capture form data
   const [formData, setFormData] = useState({
@@ -55,7 +55,7 @@ const SolutionFormPage = () => {
               preRequisites: data.solution.preRequisites,
             });
             setQuestionName(data.questionName);
-            setSolution(data.solution)
+            setSolution(data.solution);
           } else {
             toast.error(data.message);
             console.log(data.message);
@@ -137,7 +137,11 @@ const SolutionFormPage = () => {
 
       const data = await res.json();
       if (data.ok) {
-        toast.success("Successfully updated the solution");
+        toast.success("Successfully updated the solution", { duration : 1500 }); // Display toast for 1 second
+
+        setTimeout(() => {
+          router.push(`/solution/${solutionId}`);
+        }, 2500); // Delay the push by 1 second
       } else {
         console.log(data.message);
         toast.error(data.message);

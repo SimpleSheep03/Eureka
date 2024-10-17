@@ -11,8 +11,18 @@ export const GET = async (request) => {
 
     if(platform == "all"){
       const questionsArr = await Question.find({})
-      let questions = questionsArr.map((question) => {return { value : question._id , label : question.title , contestDate : question.contestDate }})
-      questions.sort((a , b) => b.contestDate - a.contestDate)
+      let questions = questionsArr.map((question) => {return { value : question._id , label : question.title , contestDate : question.contestDate , solutionsLength : question.solutions.length , requestedBy : question.requestedBy }})
+
+      questions.sort((a , b) => {
+        if(a.contestDate == b.contestDate){
+          if(a.solutionsLength == b.solutionsLength){
+            return b.requestedBy - a.requestedBy
+          }
+          return b.solutionsLength - a.solutionsLength
+        }
+        return b.contestDate - a.contestDate
+      })
+      
       return new Response(JSON.stringify({ message : 'Fetched the questions successfully' , ok : true , questions }) , { status : 200 })
     }
 
@@ -67,10 +77,27 @@ export const POST = async (request) => {
     // console.log(await Question.estimatedDocumentCount())
 
     if (pageNo) {
-      const questions = await Question.find()
-        .sort({ requestedBy: -1, contestDate: -1 })
-        .skip((pageNo - 1) * 10)
-        .limit(actualSize);
+      const questions = await Question.aggregate([
+        {
+          $addFields: {
+            solutionsLength: { $size: "$solutions" }  // Calculate the length of the solutions array
+          }
+        },
+        {
+          $sort: {
+            requestedBy: -1,      // First sort by requestedBy
+            contestDate: -1,      // Then sort by contestDate
+            solutionsLength: -1   // Lastly, sort by the length of the solutions array
+          }
+        },
+        {
+          $skip: (pageNo - 1) * 10  // Skip the documents for pagination
+        },
+        {
+          $limit: actualSize         // Limit the result to actualSize
+        }
+      ]);
+      
 
       return new Response(
         JSON.stringify({
@@ -83,9 +110,22 @@ export const POST = async (request) => {
       );
     }
 
-    const questions = await Question.find()
-      .sort({ requestedBy: -1, contestDate: -1 })
-      .limit(actualSize);
+    const questions = await Question.aggregate([
+      {
+        $addFields: {
+          solutionsLength: { $size: "$solutions" }  // Calculate the length of the solutions array
+        }
+      },
+      {
+        $sort: {
+          contestDate: -1,
+          solutionsLength: -1,  // Sort by the calculated length of the solutions array
+          requestedBy: -1
+        }
+      },
+      { $limit: actualSize }
+    ]);
+    
 
     return new Response(
       JSON.stringify({
