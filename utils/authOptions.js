@@ -11,46 +11,73 @@ export const authOptions = {
       authorization: {
         params: {
           prompt: 'consent',
-          access_type: 'offline',
+          access_type: 'offline',  // Ensure access to refresh tokens
           response_type: 'code',
         },
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',  // Use JWT sessions
+    maxAge: 30 * 24 * 60 * 60, // Session duration: 30 days
+    updateAge: 24 * 60 * 60,   // Update session every 24 hours
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // JWT expiry time: 30 days
+  },
   callbacks: {
-    // Invoked on successful signin
     async signIn({ profile }) {
-      // 1. Connect to database
-      await connectDB();
-      // // 2. Check if user exists
-      const userExists = await User.findOne({ email: profile.email });
-      // // 3. If not, then add user to database
-      if (!userExists) {
+      try {
+        // 1. Connect to database
+        await connectDB();
 
-        const name = profile.name;
+        // 2. Check if user exists
+        const userExists = await User.findOne({ email: profile.email });
 
-        await User.create({
-          email: profile.email,
-          name,
-          image : profile.picture,
-          username : ''
-        });
+        // 3. If not, add the user to the database
+        if (!userExists) {
+          const name = profile.name;
+          await User.create({
+            email: profile.email,
+            name,
+            image: profile.picture,
+            username: ''
+          });
+        }
 
-        return true 
+        // 4. Return true to allow sign-in
+        return true;
+      } catch (error) {
+        console.error("Error during sign-in callback:", error);
+        return false;
       }
-      
-      // 4. Return true to allow sign in
-      return true;
     },
-    // Modifies the session object
     async session({ session }) {
-      // 1. Get user from database
-      const user = await User.findOne({ email: session.user.email });
-      // // 2. Assign the user id to the session
-      session.user.id = user._id.toString();
-      session.username = user.username
-      // 3. return session
-      return session;
+      try {
+        // 1. Get the user from the database
+        const user = await User.findOne({ email: session.user.email });
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        // 2. Assign the user id and username to the session
+        session.user.id = user._id.toString();
+        session.username = user.username;
+
+        // 3. Return the session object
+        return session;
+      } catch (error) {
+        console.error("Error during session callback:", error);
+        return session;
+      }
     },
   },
+  events: {
+    async error(message) {
+      console.error('NextAuth error:', message);
+    },
+  },
+  debug: true,  // Enable debug mode for error tracing
 };
+
+export default authOptions;
