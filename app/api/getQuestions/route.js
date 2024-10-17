@@ -13,7 +13,7 @@ export const GET = async (request) => {
 
     if(platform == "all"){
       const questionsArr = await Question.find({})
-      let questions = questionsArr.map((question) => {return { value : question._id , label : question.title , contestDate : question.contestDate , solutionsLength : question.solutions.length , requestedBy : question.requestedBy }})
+      let questions = questionsArr.map((question) => {return { value : question._id , label : question.title , contestDate : question.contestDate , solutionsLength : question.solutions.length , requestedBy : question.requestedBy , color : question.contestName.includes("Codeforces") ? '#C20B0D' : question.contestName.includes("Codechef") ? "#10427F" : "#C09C08" }})
 
       questions.sort((a , b) => {
         if(a.contestDate == b.contestDate){
