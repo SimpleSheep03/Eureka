@@ -30,7 +30,7 @@ const SelectComponent = ({ fetchColourOptions, onOptionSelect }) => {
       </div>
     );
   }
-  console.log(colourOptions)
+  
   return (
     <>
       <Select

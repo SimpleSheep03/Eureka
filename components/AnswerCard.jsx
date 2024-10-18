@@ -22,7 +22,7 @@ const AnswerCard = ({ answer, edit }) => {
           {answer.question.title}
         </Link>
 
-        <div className="flex items-center text-[17px] md:ml-2 max-sm:font-thin max-sm:my-2 max-sm:text-[16px]">
+        <div className="flex items-center text-[17px] md:ml-2 font-thin max-sm:my-2 max-sm:text-[16px]">
           <Link href={`/contest/${answer.contest}`} className="flex items-center">
             <span className="block sm:inline">({answer.contestName})</span>
 

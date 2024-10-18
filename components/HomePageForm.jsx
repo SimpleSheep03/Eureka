@@ -90,7 +90,6 @@ const ContestForm = () => {
   const handleSelectedQuestion = (option) => {
     setSelectedQuestion(option);
   };
-  console.log(questions)
 
   const handleSubmit = (e) => {
     e.preventDefault();

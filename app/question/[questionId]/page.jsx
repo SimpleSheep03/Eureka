@@ -243,28 +243,39 @@ const page = () => {
         {/* Display question details */}
         {question && (
           <>
-            <Link
-              href={question.questionLink}
-              target="__blank"
-              className="text-3xl font-bold mb-5 flex justify-center underline text-center"
-            >
-              {question.title}
-            </Link>
+            <div className="flex justify-center mb-5">
+              <Link
+                href={question.questionLink}
+                target="_blank"
+                className="text-3xl font-bold underline text-center"
+              >
+                {question.title}
+              </Link>
+            </div>
 
-            <div className="mb-10 text-center underline">
+            <div className="mb-10 text-center font-normal">
               <span className="text-2xl">
                 <Link href={`/contest/${question.contest}`}>{contestName}</Link>
               </span>
             </div>
 
-            <div className="mb-6 max-sm:mb-7">
-              <span className="font-semibold">Question Link: </span>
+            <div className="mb-6 max-sm:mb-7 max-sm:flex max-sm:hover:underline">
               <Link
                 href={question.questionLink}
-                target="__blank"
-                className="text-white font-bold underline break-all" // Ensures long words (links) break onto the next line
+                target="_blank"
+                title={`${question.contestName}`}
+                className="text-white break-all inline-flex items-center max-w-full"
               >
-                {question.questionLink}
+                <span className="font-semibold max-sm:font-medium whitespace-nowrap">
+                  Question Link<span className="max-sm:hidden md:mx-1">:</span>
+                </span>
+                {/* For small screens (sm and below), show the icon; otherwise, show the link */}
+                <span className="sm:hidden ml-2">
+                  <FaExternalLinkAlt />
+                </span>
+                <span className="hidden sm:inline break-all underline font-bold">
+                  {question.questionLink}
+                </span>
               </Link>
             </div>
 
@@ -296,7 +307,7 @@ const page = () => {
               </div>
             )}
 
-            <div className="flex items-center max-sm:mb-10 ml-1 font-semibold text-[20px]">
+            <div className="flex items-center max-sm:mb-[43px] ml-1 font-semibold text-[20px]">
               <Link
                 href={`/solution/add/${question._id}`}
                 className="flex items-center text-teal-400 hover:text-teal-300 underline"
@@ -307,9 +318,9 @@ const page = () => {
             </div>
 
             {/* Display solutions */}
-            <div className="mt-6">
-              <h3 className="text-2xl font-semibold mb-6 text-center">
-                Solutions:
+            <div>
+              <h3 className="text-[24px] md:text-[28px] font-semibold mb-6 text-center">
+                Solutions
               </h3>
 
               {solutions.length > 0 ? (
@@ -322,7 +333,7 @@ const page = () => {
                         key={index}
                         className="mb-6 md:p-4 border-b border-gray-600"
                       >
-                        <h4 className="text-xl font-semibold underline flex items-center">
+                        <h4 className="text-[21px] font-semibold underline flex items-center">
                           <Link
                             href={`/solution/${solution._id}`}
                             className="flex items-center"
@@ -331,12 +342,12 @@ const page = () => {
                             <FaExternalLinkAlt className="ml-3 text-[15px]" />
                           </Link>
                         </h4>
-                        <p className="text-sm mt-4 max-sm:mt-4 underline text-gray-300">
+                        <p className="text-[15px] mt-4 max-sm:mt-4 text-gray-300">
                           <Link href={`/profile/${solution.User}`}>
-                            {solution.User}
+                            - {solution.User}
                           </Link>
                         </p>
-                        <p className="text-[15px] mt-5 mb-3 max-sm:mt-5 max-sm:mb-4 flex items-center">
+                        <p className="text-[15px] md:text-[16px] mt-5 mb-3 max-sm:mt-5 max-sm:mb-4 flex items-center">
                           {!liking ? (
                             <AiFillLike
                               className={`mr-2 cursor-pointer ${

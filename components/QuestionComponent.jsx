@@ -31,7 +31,7 @@ const QuestionCard = ({ question, center, contestNameDisplay }) => {
         <div
           className={`flex flex-wrap ${
             center ? "justify-center" : "ml-2"
-          } items-center mb-6`}
+          } items-center mb-6 font-thin`}
         >
           <Link
             href={`/contest/${question.contest}`}

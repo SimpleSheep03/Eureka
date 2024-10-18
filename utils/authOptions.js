@@ -77,7 +77,6 @@ export const authOptions = {
       console.error('NextAuth error:', message);
     },
   },
-  debug: true,  // Enable debug mode for error tracing
 };
 
 export default authOptions;

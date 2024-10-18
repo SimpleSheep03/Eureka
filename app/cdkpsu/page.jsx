@@ -30,7 +30,6 @@ const SimpleContestForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ contestId, questionTitle, questionLink });
     setSubmitting(true);
 
     try {
