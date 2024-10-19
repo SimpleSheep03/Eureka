@@ -50,8 +50,17 @@ const ProfilePage = () => {
   }
 
   if (!user) {
-    return <p className="text-center text-white">User not found.</p>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-center text-4xl text-gray-300 font-semibold mb-4">Oops!</p>
+        <p className="text-center text-white text-3xl">
+          We couldn't find the user you're looking for.
+        </p>
+      </div>
+    );
   }
+  
+  
 
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">

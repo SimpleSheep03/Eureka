@@ -39,6 +39,16 @@ export const POST = async (request) => {
 
     user = user[0];
 
+    let author = await User.find({ username : solution.User })
+    if(!author || author.length != 1){
+      return new Response(
+        JSON.stringify({ message: "Incorrect input", ok: false }),
+        { status: 400 }
+      );
+    }
+
+    author = author[0]
+
     let reactions = user.reactions;
 
     let flag = 0,
@@ -57,7 +67,7 @@ export const POST = async (request) => {
           (reaction) => reaction._id.toString() !== solutionId.toString()
         );
         solution.netUpvotes = solution.netUpvotes - value;
-        user.popularity = user.popularity - value
+        author.popularity = author.popularity - value
       } else {
         for (const reaction of reactions) {
           if (reaction._id == solutionId.toString()) {
@@ -65,18 +75,20 @@ export const POST = async (request) => {
           }
         }
         solution.netUpvotes = solution.netUpvotes + 2 * value;
-        user.popularity = user.popularity + 2 * value
+        author.popularity = author.popularity + 2 * value
       }
     } else {
       reactions.push({ _id: solutionId, value });
       solution.netUpvotes = solution.netUpvotes + value;
-      user.popularity = user.popularity + value
+      author.popularity = author.popularity + value
     }
 
     user.reactions = reactions;
 
     await user.save();
     await solution.save();
+    await author.save()
+    
     return new Response(
       JSON.stringify({
         message: "Successfully updated the reaction",
