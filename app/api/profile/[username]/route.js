@@ -40,6 +40,7 @@ export const GET = async (request, { params }) => {
     for (let solution of solutions) {
       solution.question = {
         title: solution.questionName,
+        _id : solution.question
       };
     }
 
