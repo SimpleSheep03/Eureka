@@ -10,7 +10,7 @@ const AnswerCard = ({ answer, edit }) => {
       <div className="flex justify-between items-center mb-5">
         <Link
           href={`/solution/${answer._id}`}
-          className="text-xl flex items-center"
+          className="text-[22px] flex items-center"
         >
           <span className="underline">{answer.heading}</span>
           <FaExternalLinkAlt className="ml-2 text-[15px]" />
