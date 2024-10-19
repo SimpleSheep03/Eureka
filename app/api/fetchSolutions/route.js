@@ -100,7 +100,7 @@ export const POST = async (request) => {
     }
 
     const solutions = await Solution.find()
-      .sort({ contestDate: -1 , netUpvotes: -1 })
+      .sort({ contestDate: -1 , netUpvotes: -1 , createdAt : -1 })
       .populate("question")
       .limit(actualSize);
 
