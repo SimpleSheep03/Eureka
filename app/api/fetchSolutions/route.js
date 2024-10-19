@@ -45,7 +45,7 @@ export const POST = async (request) => {
         );
       }
       const solutions = await Solution.find({ question: questionId })
-        .sort({ netUpvotes: -1 })
+        .sort({ netUpvotes: -1 , createdAt : -1 })
         .limit(actualSize);
 
       return new Response(
@@ -82,7 +82,7 @@ export const POST = async (request) => {
     }
     else if(pageNo){
       const solutions = await Solution.find()
-      .sort({ contestDate: -1 , netUpvotes: -1 })
+      .sort({ contestDate: -1 , netUpvotes: -1 , createdAt : -1 })
       .populate("question")
       .skip((pageNo - 1) * 10)
       .limit(actualSize);

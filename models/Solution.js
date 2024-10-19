@@ -7,6 +7,10 @@ const SolutionSchema = new Schema(
       ref: "Question",
       required: true,
     },
+    questionName : {
+      type : String,
+      required : true,
+    },
     acceptedCodeLink: {
       type: String,
     },

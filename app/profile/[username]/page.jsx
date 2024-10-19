@@ -69,9 +69,9 @@ const ProfilePage = () => {
               />
               <div>
                 <h1 className="text-4xl font-semibold text-gray-200">
-                  {user.name}
+                  {user.username}
                 </h1>
-                <p className="text-sm text-gray-400 mt-1">{user.email}</p>
+                <p className="text-[18px] text-gray-400 mt-2">{user.name}</p>
                 <p
                   className={`mt-2 ${
                     user.popularity > 0

@@ -27,12 +27,22 @@ export const GET = async (request, { params }) => {
     if (session && session.username == username) {
       reactions = user.reactions;
     }
-    let solutions = await Solution.find({ User: username }).sort({
-      contestDate: -1,
-      netUpvotes: -1,
-    }); 
+    let solutions = await Solution.find({ User: username })
+      .sort({
+        contestDate: -1,
+        netUpvotes: -1,
+        updatedAt: -1,
+      })
+      .lean(); // Convert Mongoose documents to plain JS objects
 
     solutions.sort((a, b) => b.contestDate - a.contestDate);
+
+    for (let solution of solutions) {
+      solution.question = {
+        title: solution.questionName,
+      };
+    }
+
     return new Response(
       JSON.stringify({
         message: "Fetched the user details successfully",

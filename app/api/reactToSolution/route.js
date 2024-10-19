@@ -57,6 +57,7 @@ export const POST = async (request) => {
           (reaction) => reaction._id.toString() !== solutionId.toString()
         );
         solution.netUpvotes = solution.netUpvotes - value;
+        user.popularity = user.popularity - value
       } else {
         for (const reaction of reactions) {
           if (reaction._id == solutionId.toString()) {
@@ -64,10 +65,12 @@ export const POST = async (request) => {
           }
         }
         solution.netUpvotes = solution.netUpvotes + 2 * value;
+        user.popularity = user.popularity + 2 * value
       }
     } else {
       reactions.push({ _id: solutionId, value });
       solution.netUpvotes = solution.netUpvotes + value;
+      user.popularity = user.popularity + value
     }
 
     user.reactions = reactions;
