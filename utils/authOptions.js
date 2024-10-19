@@ -54,6 +54,8 @@ export const authOptions = {
     },
     async session({ session }) {
       try {
+
+        await connectDB()
         // 1. Get the user from the database
         const user = await User.findOne({ email: session.user.email });
         if (!user) {
