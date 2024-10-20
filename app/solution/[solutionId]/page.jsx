@@ -8,7 +8,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { HiClipboardCopy } from "react-icons/hi";
 import { IoCheckmark } from "react-icons/io5";
-import { WhatsappIcon, WhatsappShareButton } from "react-share";
+import { WhatsappIcon } from "react-share";
 import { useSession } from "next-auth/react";
 import {
   Accordion,
@@ -285,14 +285,14 @@ const Page = () => {
                   <HiClipboardCopy size={26} />
                 )}
               </span>
-              <WhatsappShareButton
-                url={window.location.href}
-                className="ml-4"
-                title={`*${questionName}*\n_${solution.contestName}_\n\n*Solution* :- ${solution.solutionText}\n\n For the complete solution visit`}
-                separator=" : "
-              >
-                <WhatsappIcon size={26} round />
-              </WhatsappShareButton>
+              <Link
+  href={`https://api.whatsapp.com/send?text=*${encodeURIComponent(questionName)}*%0A_${encodeURIComponent(solution.contestName)}_%0A%0A*Solution* :- ${encodeURIComponent(solution.solutionText)}%0A%0A For the complete solution visit ${encodeURIComponent(window.location.href)}`}
+  className="ml-4"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <WhatsappIcon size={26} round />
+</Link>
             </div>
 
             {solution.additionalLinks?.length > 0 && (

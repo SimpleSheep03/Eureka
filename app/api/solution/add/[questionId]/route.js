@@ -55,7 +55,7 @@ export const POST = async (request , { params }) => {
     const solution = new Solution({
       User , 
       question : question._id,
-      question : question.title,
+      questionName : question.title,
       heading ,
       solutionText : compressToBase64(solutionText),
       solutionHints,
