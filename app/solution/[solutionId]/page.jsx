@@ -194,7 +194,7 @@ const Page = () => {
               <div className="flex justify-end">
                 <Link href={`/solution/${solution._id}/edit`}>
                   <button
-                    className="flex items-center bg-gray-600 hover:bg-gray-700 text-white py-2 px-3 rounded-lg shadow-md transition-colors duration-300"
+                    className="flex items-center bg-gray-600 hover:bg-gray-700 text-white py-2 px-3 rounded-lg shadow-md transition-colors duration-300 mt-6"
                     title="Edit Solution"
                   >
                     <FaEdit size={20} className="mr-2" />
