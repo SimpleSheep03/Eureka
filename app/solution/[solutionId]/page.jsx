@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
 import Loader from "@/components/Loader";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaEdit, FaExternalLinkAlt } from "react-icons/fa";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { HiClipboardCopy } from "react-icons/hi";
 import { IoCheckmark } from "react-icons/io5";
@@ -29,6 +29,7 @@ const Page = () => {
   const { data: session } = useSession();
   const [reacted, setReacted] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [author, setAuthor] = useState(false);
   const handle = session?.username;
 
   const [openStates, setOpenStates] = useState([]);
@@ -66,6 +67,9 @@ const Page = () => {
               setReacted(reaction.value);
             }
           }
+          if (session && session.username == data.solution.User) {
+            setAuthor(true);
+          }
         } else {
           console.log(data.message);
           toast.error(data.message);
@@ -79,7 +83,7 @@ const Page = () => {
     };
 
     fetchSolution();
-  }, [solutionId, handle]);
+  }, [solutionId, handle, session]);
 
   const toggleAccordion = (index) => {
     setOpenStates((prevOpenStates) => {
@@ -179,11 +183,26 @@ const Page = () => {
                 </Link>
               </span>
             </div>
-            <Link href={`/profile/${solution.User}`} className="mb-4">
+
+            <Link href={`/profile/${solution.User}`}>
               <h3 className="text-lg mb-5 text-center underline">
                 - {solution.User}
               </h3>
             </Link>
+
+            {author && (
+              <div className="flex justify-end">
+                <Link href={`/solution/${solution._id}/edit`}>
+                  <button
+                    className="flex items-center bg-gray-600 hover:bg-gray-700 text-white py-2 px-3 rounded-lg shadow-md transition-colors duration-300"
+                    title="Edit Solution"
+                  >
+                    <FaEdit size={20} className="mr-2" />
+                    <span>Edit<span className="max-sm:hidden ml-1">Solution</span></span>
+                  </button>
+                </Link>
+              </div>
+            )}
 
             {solution.preRequisites && (
               <div className="mt-10 mb-6">
@@ -215,7 +234,6 @@ const Page = () => {
                         onClick={() => toggleAccordion(index)}
                       >
                         <AccordionItemButton className="flex items-center mb-1 w-[75px]">
-                          {/* Dropdown indicator */}
                           <span className="mr-2">
                             {openStates[index] ? "▼" : "▶"}
                           </span>
@@ -286,24 +304,30 @@ const Page = () => {
                 )}
               </span>
               <Link
-  href={`https://api.whatsapp.com/send?text=*${encodeURIComponent(questionName)}*%0A_${encodeURIComponent(solution.contestName)}_%0A%0A*Solution* :- ${encodeURIComponent(solution.solutionText)}%0A%0A For the complete solution visit ${encodeURIComponent(window.location.href)}`}
-  className="ml-4"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <WhatsappIcon size={26} round />
-</Link>
+                href={`https://api.whatsapp.com/send?text=*${encodeURIComponent(
+                  questionName
+                )}*%0A_${encodeURIComponent(
+                  solution.contestName
+                )}_%0A%0A*Solution* :- ${encodeURIComponent(
+                  solution.solutionText
+                )}%0A%0A For the complete solution visit ${encodeURIComponent(
+                  window.location.href
+                )}`}
+                className="ml-4"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <WhatsappIcon size={26} round />
+              </Link>
             </div>
 
             {solution.additionalLinks?.length > 0 && (
               <div className="mt-4">
                 <h4 className="text-lg font-semibold">Additional Links:</h4>
                 <p className="mt-2 bg-gray-700 py-2 px-3 rounded-md">
-                  {/* Split the text and link using regex */}
                   {solution.additionalLinks
                     .split(/(https?:\/\/[^\s]+)/g)
                     .map((part, index) =>
-                      // Check if the part is a link
                       part.match(/https?:\/\/[^\s]+/) ? (
                         <Link
                           key={index}
@@ -315,7 +339,6 @@ const Page = () => {
                           {part}
                         </Link>
                       ) : (
-                        // Otherwise, render the plain text
                         <span key={index}>{part}</span>
                       )
                     )}
