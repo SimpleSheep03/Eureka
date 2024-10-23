@@ -42,7 +42,7 @@ const RequestedQuestions = () => {
   // Initial fetch for page 1
   useEffect(() => {
     fetchQuestions(pageNo);
-  }, [pageNo]);
+  }, []);
 
   const handlePageChange = async (pageNum) => {
     setLoading(true);
