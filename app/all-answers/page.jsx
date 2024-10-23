@@ -60,7 +60,7 @@ const AllAnswers = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pageNo: newPageNo }),
+        body: JSON.stringify({ pageNo: newPageNo , size : 10 }),
       });
 
       const data = await res.json();
