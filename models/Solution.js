@@ -72,6 +72,10 @@ const SolutionSchema = new Schema(
 );
 
 SolutionSchema.index({ question : 1 })
+SolutionSchema.index({ question : 1 , netUpvotes : -1 , createdAt : -1 })
+SolutionSchema.index({ netUpvotes: -1 , createdAt : -1 })
+SolutionSchema.index({ contestDate: -1 , netUpvotes: -1 , createdAt: -1 });
+SolutionSchema.index({ updatedAt : -1 , contestDate: -1 , netUpvotes: -1 });
 
 const Solution = models.Solution || model("Solution", SolutionSchema);
 

@@ -40,6 +40,7 @@ const UserSchema = new Schema({
 });
 
 UserSchema.index({ username: 1 });
+UserSchema.index({ email : 1 });
 
 const User = models.User || model('User', UserSchema);
 

@@ -23,7 +23,7 @@ const ContestSchema = new Schema({
     timestamps : true
 })
 
-ContestSchema.index({ platform : 1 })
+ContestSchema.index({ platform : 1 , contestDate : -1 })
 
 const Contest = models.Contest || model('Contest' , ContestSchema)
 

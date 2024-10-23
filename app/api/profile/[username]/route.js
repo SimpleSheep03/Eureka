@@ -29,13 +29,12 @@ export const GET = async (request, { params }) => {
     }
     let solutions = await Solution.find({ User: username })
       .sort({
+        updatedAt: -1,
         contestDate: -1,
         netUpvotes: -1,
-        updatedAt: -1,
       })
       .lean(); // Convert Mongoose documents to plain JS objects
 
-    solutions.sort((a, b) => b.contestDate - a.contestDate);
 
     for (let solution of solutions) {
       solution.question = {

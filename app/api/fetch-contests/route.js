@@ -18,7 +18,7 @@ export const POST = async (request) => {
     await connectDB();
 
     // Fetch contests for the selected platform
-    const contests = await Contest.find({ platform });
+    const contests = await Contest.find({ platform }).sort({ contestDate : -1 });
 
     // Prepare an array of contest objects
     const contestArr = contests.map((contest) => ({
@@ -26,8 +26,6 @@ export const POST = async (request) => {
       label: contest.title,
       contestDate : contest.contestDate
     }));
-
-    contestArr.sort((a, b) => parseInt(b.contestDate) - parseInt(a.contestDate));
 
     // Send response with the fetched contests
     return new Response(
