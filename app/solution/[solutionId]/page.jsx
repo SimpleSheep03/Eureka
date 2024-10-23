@@ -177,7 +177,7 @@ const Page = () => {
                   {`- ${questionName}`}
                 </Link>
               </span>
-              <span className="mt-3 block max-sm:text-[19px] md:text-[22px] text-gray-50 font-extralight">
+              <span className="mt-3 block max-sm:text-[19px] md:text-[22px] text-gray-50 font-normal">
                 <Link href={`/contest/${solution.contest}`}>
                   ({solution.contestName})
                 </Link>
