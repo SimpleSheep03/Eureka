@@ -1,3 +1,4 @@
+import connectDB from "@/config/database";
 import Question from "@/models/Question";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
@@ -28,7 +29,8 @@ export const POST = async (request) => {
         { status: 401 }
       );
     }
-
+    
+    await connectDB()
     const question = await Question.findById(questionId);
     let user = await User.find({ username: handle });
 

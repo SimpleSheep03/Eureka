@@ -44,10 +44,6 @@ const RequestedQuestions = () => {
     fetchQuestions(pageNo);
   }, [pageNo]);
 
-  if (loading) {
-    return <Loader />; // Show loader while fetching data
-  }
-
   const handlePageChange = async (pageNum) => {
     setLoading(true);
     try {
@@ -74,6 +70,10 @@ const RequestedQuestions = () => {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loader />; // Show loader while fetching data
+  }
 
   return (
     <div className="flex justify-center items-center md:mt-8 md:p-10">
