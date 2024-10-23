@@ -177,7 +177,7 @@ const Page = () => {
                   {`- ${questionName}`}
                 </Link>
               </span>
-              <span className="mt-3 block max-sm:text-[19px] md:text-[22px] text-gray-50 font-semibold">
+              <span className="mt-3 block max-sm:text-[19px] md:text-[22px] text-gray-50 font-extralight">
                 <Link href={`/contest/${solution.contest}`}>
                   ({solution.contestName})
                 </Link>
@@ -185,7 +185,7 @@ const Page = () => {
             </div>
 
             <Link href={`/profile/${solution.User}`}>
-              <h3 className="text-lg mb-5 text-center underline">
+              <h3 className="text-lg mb-5 text-center font-thin">
                 - {solution.User}
               </h3>
             </Link>
