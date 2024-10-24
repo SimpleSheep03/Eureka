@@ -35,8 +35,6 @@ export const GET = async (request) => {
       );
     }
 
-    await connectDB(); // Connect to database
-
     const contest = await Contest.findById(contestId).populate({
       path: "questions", // Name of the field in Contest that holds the array of question _ids
       model: "Question", // The model you're populating from (Question model)
