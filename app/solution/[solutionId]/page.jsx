@@ -161,7 +161,7 @@ const Page = () => {
   };
 
   const openWhatsappShare = (url, questionName, solution) => {
-    const encodedText = encodeURIComponent(`*${questionName}*\n_${solution.contestName}_\n\n*Solution* :- ${solution.solutionText}\n\nFor the complete solution visit ${url}`);
+    const encodedText = encodeURIComponent(`*${questionName}*\n_${solution.contestName}_\n\n*Solution* :- ${solution.solutionText}\n\nFor the complete solution visit : ${url}`);
     
     // Check if the device is mobile
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
