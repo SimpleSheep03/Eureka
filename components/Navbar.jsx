@@ -91,7 +91,7 @@ const Navbar = () => {
           </Link>
 
           {/* Conditional Rendering for Sign In or Profile */}
-          {!session ? fetchingProfile ? (<PuffLoader size={24}/>) : (
+          {!session ? fetchingProfile ? (<PuffLoader size={36}/>) : (
             <button
               className="flex items-center space-x-2 rounded-lg border border-orange-500 py-2 px-4 font-sans text-xs font-bold uppercase text-orange-500 transition-all hover:opacity-75 focus:ring focus:ring-pink-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               disabled={!providers?.google}
