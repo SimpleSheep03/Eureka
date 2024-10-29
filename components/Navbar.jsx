@@ -6,9 +6,10 @@ import Image from "next/image";
 import { IoHomeSharp } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter, usePathname } from "next/navigation";
+import { PuffLoader } from "react-spinners";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session , status } = useSession();
   const [providers, setProviders] = useState(null);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const menuButtonRef = useRef(null);
@@ -16,6 +17,7 @@ const Navbar = () => {
   const profileImage = session?.user?.image;
   const router = useRouter();
   const pathname = usePathname();
+  const [fetchingProfile , setFetchingProfile] = useState(true)
 
   useEffect(() => {
     const setAuthProviders = async () => {
@@ -56,6 +58,14 @@ const Navbar = () => {
     }
   }, [session, pathname]);
 
+  useEffect(() => {
+    if (status === 'loading') {
+      setFetchingProfile(true);
+    } else {
+      setFetchingProfile(false);
+    }
+  }, [status]);
+
   return (
     <nav className="navbar bg-stone-200 border-b-2 border-red-100 py-4">
       <div className="container flex items-center justify-around">
@@ -81,7 +91,7 @@ const Navbar = () => {
           </Link>
 
           {/* Conditional Rendering for Sign In or Profile */}
-          {!session ? (
+          {!session ? fetchingProfile ? (<PuffLoader size={24}/>) : (
             <button
               className="flex items-center space-x-2 rounded-lg border border-orange-500 py-2 px-4 font-sans text-xs font-bold uppercase text-orange-500 transition-all hover:opacity-75 focus:ring focus:ring-pink-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               disabled={!providers?.google}
