@@ -184,11 +184,9 @@ const Page = () => {
               </span>
             </div>
 
-            <Link href={`/profile/${solution.User}`}>
-              <h3 className="text-lg mb-5 text-center font-thin">
-                - {solution.User}
-              </h3>
-            </Link>
+            <h3 className="text-lg mb-5 text-center font-thin">
+              <Link href={`/profile/${solution.User}`}>- {solution.User}</Link>
+            </h3>
 
             {author && (
               <div className="flex justify-end">
@@ -198,7 +196,9 @@ const Page = () => {
                     title="Edit Solution"
                   >
                     <FaEdit size={20} className="mr-2" />
-                    <span>Edit<span className="max-sm:hidden ml-1">Solution</span></span>
+                    <span>
+                      Edit<span className="max-sm:hidden ml-1">Solution</span>
+                    </span>
                   </button>
                 </Link>
               </div>
@@ -279,7 +279,7 @@ const Page = () => {
               <div className="mt-7 flex items-center flex-wrap">
                 <Link
                   href={solution.acceptedCodeLink}
-                  target="__blank"
+                  target="_blank"
                   className="text-white underline flex items-center"
                   rel="noopener noreferrer"
                 >
@@ -304,18 +304,18 @@ const Page = () => {
                 )}
               </span>
               <Link
-                href={`https://api.whatsapp.com/send?text=*${encodeURIComponent(
+                href={`https://web.whatsapp.com/send?text=*${encodeURIComponent(
                   questionName
                 )}*%0A_${encodeURIComponent(
                   solution.contestName
                 )}_%0A%0A*Solution* :- ${encodeURIComponent(
                   solution.solutionText
-                )}%0A%0A For the complete solution visit ${encodeURIComponent(
+                )}%0A%0AFor the complete solution visit ${encodeURIComponent(
                   window.location.href
                 )}`}
                 className="ml-4"
-                target="_blank"
                 rel="noopener noreferrer"
+                target="_blank"
               >
                 <WhatsappIcon size={26} round />
               </Link>
@@ -332,7 +332,7 @@ const Page = () => {
                         <Link
                           key={index}
                           href={part}
-                          target="__blank"
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="underline break-all"
                         >
