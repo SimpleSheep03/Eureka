@@ -160,6 +160,20 @@ const Page = () => {
     }, 2000); // Reset the icon back to clipboard after 2 seconds
   };
 
+  const openWhatsappShare = (url, questionName, solution) => {
+    const encodedText = encodeURIComponent(`*${questionName}*\n_${solution.contestName}_\n\n*Solution* :- ${solution.solutionText}\n\nFor the complete solution visit ${url}`);
+    
+    // Check if the device is mobile
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  
+    // Use different URLs based on the device
+    const whatsappUrl = isMobile 
+      ? `whatsapp://send?text=${encodedText}` 
+      : `https://web.whatsapp.com/send?text=${encodedText}`;
+    
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -293,33 +307,19 @@ const Page = () => {
 
             {/* Share Solution Section */}
             <div className="my-6 flex items-center">
-              <h4 className="text-lg font-semibold mr-4">
-                Share the solution:
-              </h4>
-              <span onClick={handleCopy} className="cursor-pointer">
-                {copied ? (
-                  <IoCheckmark className="" size={26} />
-                ) : (
-                  <HiClipboardCopy size={26} />
-                )}
-              </span>
-              <Link
-                href={`https://web.whatsapp.com/send?text=*${encodeURIComponent(
-                  questionName
-                )}*%0A_${encodeURIComponent(
-                  solution.contestName
-                )}_%0A%0A*Solution* :- ${encodeURIComponent(
-                  solution.solutionText
-                )}%0A%0AFor the complete solution visit ${encodeURIComponent(
-                  window.location.href
-                )}`}
-                className="ml-4"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <WhatsappIcon size={26} round />
-              </Link>
-            </div>
+  <h4 className="text-lg font-semibold mr-4">
+    Share the solution:
+  </h4>
+  <span onClick={handleCopy} className="cursor-pointer">
+    {copied ? <IoCheckmark size={26} /> : <HiClipboardCopy size={26} />}
+  </span>
+  <span 
+    onClick={() => openWhatsappShare(window.location.href, questionName, solution)} 
+    className="ml-4 cursor-pointer"
+  >
+    <WhatsappIcon size={26} round />
+  </span>
+</div>
 
             {solution.additionalLinks?.length > 0 && (
               <div className="mt-4">
